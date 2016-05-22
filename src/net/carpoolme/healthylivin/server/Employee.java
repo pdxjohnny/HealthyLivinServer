@@ -1,4 +1,4 @@
-package net.carpoolme.healthylivin;
+package net.carpoolme.healthylivin.server;
 
 /**
  * Created by John Andersen on 5/13/16.

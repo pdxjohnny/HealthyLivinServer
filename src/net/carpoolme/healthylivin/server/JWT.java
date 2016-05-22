@@ -1,4 +1,4 @@
-package net.carpoolme.healthylivin;
+package net.carpoolme.healthylivin.server;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Map;
 
 /**
  * Created by John Andersen on 5/22/16.

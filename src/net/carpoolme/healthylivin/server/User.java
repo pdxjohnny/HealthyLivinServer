@@ -1,11 +1,10 @@
-package net.carpoolme.healthylivin;
+package net.carpoolme.healthylivin.server;
 
 /**
  * Created by John Andersen on 5/13/16.
  */
 
 import java.io.InputStream;
-import java.util.Scanner;
 
 public class User extends Object {
     private JWT token;

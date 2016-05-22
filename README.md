@@ -3,6 +3,13 @@ HealthyLivin Server
 
 Provides data to the client applications
 
+Development
+---
+
+```bash
+./scripts/libs.sh
+```
+
 Forwarding the port
 ---
 
