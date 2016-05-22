@@ -1,4 +1,7 @@
-package net.carpoolme.utils;
+package net.carpoolme.auth;
+
+import net.carpoolme.utils.JSONParser;
+import net.carpoolme.utils.Parseable;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

@@ -1,21 +1,24 @@
-package net.carpoolme.healthylivin;
+package net.carpoolme.auth;
 
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.Parseable;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * Created by John Andersen on 5/13/16.
  */
 
 public abstract class User extends Object implements Parseable {
-    private BasicParser parser = new BasicParser();
+    // All protected so derived classes can change to what they need
+    protected BasicParser parser = new BasicParser();
 
-    private int id = 0;
-    private String username = "Not Logged In";
-    private String password = "No password";
+    protected int id = 0;
+    protected String username = "Not Logged In";
+    protected String password = "No password";
 
     // Set to true if you want to the password to be included in a Marshal
-    private boolean MARSHAL_PASSWORD = false;
+    protected boolean MARSHAL_PASSWORD = false;
 
     public Object[][] Marshal() {
         Object[] mId = new Object[] {"uid", getId()};
@@ -42,5 +45,5 @@ public abstract class User extends Object implements Parseable {
         return username;
     }
 
-    public abstract boolean login();
+    public abstract boolean login() throws LoginException;
 }

@@ -1,36 +1,16 @@
 #!/bin/bash
+set -x
 
 if [ -z "$PORT" ]; then
-    PORT=8000
+    PORT=80
 fi
 if [ -z "$HOST" ]; then
-    HOST="http://localhost"
+    HOST="https://healthylivin.carpoolme.net"
 fi
 SERVER="$HOST:$PORT"
 
-
-odd () {
-    curl -w '\n' ${SERVER}/odd
-}
-
-odd_by_10() {
-    curl -w '\n' ${SERVER}/odd/10
-}
-
-odd_not_3_or_5 () {
-    curl -w '\n' ${SERVER}/on
-}
-
-input () {
-    curl -w '\n' -X POST --data "$*" ${SERVER}/input
-}
-
-employee () {
-    curl -w '\n' -X POST --data "$*" ${SERVER}/add/employee
-}
-
 login () {
-    curl -w '\n' -X POST --data "$*" ${SERVER}/api/login/
+    curl --ssl --tlsv1.2 -w "\n" -X POST --data "$*" ${SERVER}/api/login/
 }
 
 $1 "${@:2}"

@@ -1,31 +1,19 @@
 package net.carpoolme.healthylivin.server;
 
-import net.carpoolme.utils.JWT;
+import net.carpoolme.auth.JWT;
+import net.carpoolme.auth.JWTUser;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * Created by John Andersen on 5/22/16.
  */
-public class User extends net.carpoolme.healthylivin.User {
-    private JWT token;
-
-    User(JWT mToken) {
-        token = mToken;
+public class User extends JWTUser {
+    public User (JWT mToken) {
+        super(mToken);
     }
 
-    public boolean login() {
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return Token();
-    }
-
-    public String Token() {
-        if (!login()) {
-            return JWT.JWT_FAILURE;
-        }
-
-        return token.toString(this);
+    public boolean login() throws LoginException {
+        throw new LoginException("Invalid username or password");
     }
 }
