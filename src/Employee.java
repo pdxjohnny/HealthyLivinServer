@@ -1,8 +1,9 @@
+/**
+ * Created by John Andersen on 5/13/16.
+ */
+
 import java.io.InputStream;
 
-/**
- * Created by developer on 5/13/16.
- */
 public class Employee extends Object {
     private String name;
     private int age;

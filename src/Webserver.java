@@ -1,5 +1,5 @@
 /**
- * Created by developer on 5/13/16.
+ * Created by John Andersen on 5/13/16.
  */
 
 import java.io.IOException;
@@ -20,6 +20,7 @@ public class Webserver {
         server.createContext("/odd/35", new OddNumbers35());
         server.createContext("/input", new Scanner());
         server.createContext("/add/employee", new EmployeeHandler());
+        server.createContext("/api/login/", new APILoginHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
     }
@@ -107,6 +108,19 @@ public class Webserver {
             Employee e = new Employee();
             e.fromStream(t.getRequestBody());
             response += e;
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private static class APILoginHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            User user = new User();
+            user.fromStream(t.getRequestBody());
+            String response = user.toString();
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
