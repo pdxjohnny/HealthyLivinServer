@@ -1,5 +1,8 @@
 package net.carpoolme.utils;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 /**
  * Created by John Andersen on 5/22/16.
  */
@@ -52,5 +55,9 @@ public class Strings {
             return TYPE_DOUBLE;
         } catch (NumberFormatException ignored) {}
         return TYPE_STRING;
+    }
+
+    public static String random() {
+        return (new BigInteger(130, new SecureRandom())).toString(32);
     }
 }

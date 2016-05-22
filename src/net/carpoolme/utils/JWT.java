@@ -3,10 +3,8 @@ package net.carpoolme.utils;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Base64;
 
 /**
@@ -33,14 +31,14 @@ public class JWT {
         CHARSET = charset;
     }
 
-    public static JWT fromEnv() {
+    public static JWT fromEnv(String ifSecretNull) {
         String secret = null;
         try {
             secret = System.getenv(JWT_SECRET);
         } catch (NullPointerException | SecurityException ignored) {}
         if (secret == null) {
-            secret = (new BigInteger(130, new SecureRandom())).toString(32);
-            System.out.println("WARN: Using randomly generated JWT secret: " + secret);
+            secret = ifSecretNull;
+            System.out.println("WARN: Secret env var was null, using provided default: " + secret);
         }
         return new JWT(secret);
     }
