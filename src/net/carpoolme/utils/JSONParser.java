@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Created by John Andersen on 5/22/16.
  * This cannot handle layered data, so no nested arrays or objects
  */
-public class JSON extends Parser {
+public class JSONParser extends Parser {
     // Constants for parsing
     public static final String JSON_TOKEN_OBJ_OPEN = "\\{";
     public static final String JSON_TOKEN_OBJ_CLOSE = "\\}";
@@ -17,7 +17,7 @@ public class JSON extends Parser {
     public static final int JSON_ON_KEY = 1;
     public static final int JSON_ON_VALUE = 2;
 
-    public static String toString(Object[][] data) {
+    public String toString(Object[][] data) {
         String asJSON = "{";
         for (int i = 0; i < data.length; i++) {
             asJSON += String.format("\"%s\": %s", data[i][0], correctFormat(data[i][1].toString()));
@@ -29,7 +29,7 @@ public class JSON extends Parser {
         return asJSON;
     }
 
-    public static Object[][] parse(InputStream in) {
+    public Object[][] parse(InputStream in) {
         Object[][] json = null;
         Scanner scanner = new Scanner(in, CHARSET).useDelimiter(JSON_TOKEN_OBJ_OPEN);
 

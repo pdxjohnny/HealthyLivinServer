@@ -1,7 +1,5 @@
 package net.carpoolme.utils;
 
-import net.carpoolme.healthylivin.User;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -21,9 +19,10 @@ public class JWT {
 
     public String CHARSET;
 
+    private JSONParser parser = new JSONParser();
     private String tokenSecret;
 
-    JWT(String mTokenSalt, String charset) {
+    public JWT(String mTokenSalt, String charset) {
         tokenSecret = mTokenSalt;
         CHARSET = charset;
     }
@@ -32,9 +31,9 @@ public class JWT {
         return new JWT(System.getenv(JWT_SECRET), JWT_CHARSET);
     }
 
-    public String toString(User user) {
+    public String toString(Parseable data) {
         String tokenHeaders = "{\"alg\": \"HS256\",\"typ\": \"JWT\"}";
-        String tokenPayload = String.format("{\"uid\": \"%d\",\"username\": \"%s\"}", user.getId(), user.getUsername());
+        String tokenPayload = parser.toString(data);
 
         // Base64 encode them all
         Base64.Encoder encoder = Base64.getUrlEncoder();

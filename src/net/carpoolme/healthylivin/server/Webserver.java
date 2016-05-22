@@ -7,7 +7,8 @@ package net.carpoolme.healthylivin.server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import net.carpoolme.utils.JSON;
+import net.carpoolme.utils.JSONParser;
+import net.carpoolme.utils.Parser;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,6 +16,7 @@ import java.net.InetSocketAddress;
 
 public class Webserver {
     private HttpServer server;
+    private Parser parser = new JSONParser();
 
     public void start() throws Exception {
         server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -45,7 +47,7 @@ public class Webserver {
         }
     }
 
-    private static class OddNumbersTenPerLine implements HttpHandler {
+    private class OddNumbersTenPerLine implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             String response = "This is the response for URI: ";
@@ -65,7 +67,7 @@ public class Webserver {
         }
     }
 
-    private static class OddNumbers35 implements HttpHandler {
+    private class OddNumbers35 implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             int lineBreak = 0;
@@ -88,7 +90,7 @@ public class Webserver {
         }
     }
 
-    private static class Scanner implements HttpHandler {
+    private class Scanner implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             String response = "This is the response for URI: ";
@@ -104,7 +106,7 @@ public class Webserver {
         }
     }
 
-    private static class EmployeeHandler implements HttpHandler {
+    private class EmployeeHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             String response = "";
@@ -118,11 +120,11 @@ public class Webserver {
         }
     }
 
-    private static class APILoginHandler implements HttpHandler {
+    private class APILoginHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             User user = new User();
-            JSON.parse(t.getRequestBody(), user);
+            parser.parse(t.getRequestBody(), user);
             String response = user.toString();
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();

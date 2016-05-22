@@ -8,6 +8,10 @@ import net.carpoolme.utils.JWT;
 public class User extends net.carpoolme.healthylivin.User {
     private JWT token;
 
+    User() {
+        token = JWT.fromEnv();
+    }
+
     public boolean login() {
         return true;
     }
