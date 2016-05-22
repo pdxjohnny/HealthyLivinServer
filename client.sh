@@ -29,4 +29,8 @@ employee () {
     curl -w '\n' -X POST --data "$*" ${SERVER}/add/employee
 }
 
+login () {
+    curl -w '\n' -X POST --data "$*" ${SERVER}/api/login/
+}
+
 $1 "${@:2}"

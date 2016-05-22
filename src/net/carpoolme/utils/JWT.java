@@ -3,8 +3,10 @@ package net.carpoolme.utils;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 /**
@@ -12,15 +14,19 @@ import java.util.Base64;
  */
 public class JWT {
     public static final String JWT_FAILURE = "false";
-    public static final String JWT_CHARSET = "UTF-8";
+    public static final String DEFAULT_CHARSET = "UTF-8";
 
     // Env vars
     public static final String JWT_SECRET = "JWT_SECRET";
 
-    public String CHARSET;
+    public String CHARSET = DEFAULT_CHARSET;
 
     private JSONParser parser = new JSONParser();
     private String tokenSecret;
+
+    public JWT(String mTokenSalt) {
+        tokenSecret = mTokenSalt;
+    }
 
     public JWT(String mTokenSalt, String charset) {
         tokenSecret = mTokenSalt;
@@ -28,7 +34,15 @@ public class JWT {
     }
 
     public static JWT fromEnv() {
-        return new JWT(System.getenv(JWT_SECRET), JWT_CHARSET);
+        String secret = null;
+        try {
+            secret = System.getenv(JWT_SECRET);
+        } catch (NullPointerException | SecurityException ignored) {}
+        if (secret == null) {
+            secret = (new BigInteger(130, new SecureRandom())).toString(32);
+            System.out.println("WARN: Using randomly generated JWT secret: " + secret);
+        }
+        return new JWT(secret);
     }
 
     public String toString(Parseable data) {
