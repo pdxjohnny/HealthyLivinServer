@@ -1,5 +1,6 @@
+package net.carpoolme.healthylivin;
+
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Scanner;
 
 /**

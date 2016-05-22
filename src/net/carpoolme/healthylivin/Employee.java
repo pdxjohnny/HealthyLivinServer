@@ -1,3 +1,5 @@
+package net.carpoolme.healthylivin;
+
 /**
  * Created by John Andersen on 5/13/16.
  */
