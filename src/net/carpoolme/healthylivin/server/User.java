@@ -1,31 +1,14 @@
 package net.carpoolme.healthylivin.server;
 
+import net.carpoolme.utils.JWT;
+
 /**
- * Created by John Andersen on 5/13/16.
+ * Created by John Andersen on 5/22/16.
  */
-
-import java.io.InputStream;
-
-public class User extends Object {
+public class User extends net.carpoolme.healthylivin.User {
     private JWT token;
 
-    private int id = 0;
-    private String username = "Not Logged In";
-    private String password = "";
-
-    User() {
-        this(JWT.fromEnv());
-    }
-
-    User(JWT mToken) {
-        token = mToken;
-    }
-
-    private boolean login() {
-        return true;
-    }
-
-    public boolean fromStream(InputStream in) {
+    public boolean login() {
         return true;
     }
 
@@ -40,13 +23,5 @@ public class User extends Object {
         }
 
         return token.toString(this);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 }

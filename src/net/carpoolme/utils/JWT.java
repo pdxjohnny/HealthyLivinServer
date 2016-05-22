@@ -1,4 +1,6 @@
-package net.carpoolme.healthylivin.server;
+package net.carpoolme.utils;
+
+import net.carpoolme.healthylivin.User;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

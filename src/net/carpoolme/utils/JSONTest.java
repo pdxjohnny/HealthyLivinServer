@@ -1,4 +1,4 @@
-package net.carpoolme.healthylivin.server;
+package net.carpoolme.utils;
 
 import org.junit.Assert;
 

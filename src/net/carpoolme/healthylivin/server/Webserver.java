@@ -4,13 +4,14 @@ package net.carpoolme.healthylivin.server;
  * Created by John Andersen on 5/13/16.
  */
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import net.carpoolme.utils.JSON;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 
 public class Webserver {
     private HttpServer server;
@@ -121,7 +122,7 @@ public class Webserver {
         @Override
         public void handle(HttpExchange t) throws IOException {
             User user = new User();
-            user.fromStream(t.getRequestBody());
+            JSON.parse(t.getRequestBody(), user);
             String response = user.toString();
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
