@@ -5,7 +5,7 @@ import net.carpoolme.healthylivin.server.Webserver;
  * Created by John Andersen on 5/13/16.
  */
 
-public class Main {
+public class Web {
     public static void main(String[] agrv) {
         Webserver server = new Webserver();
 
