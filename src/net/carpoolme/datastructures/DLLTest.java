@@ -7,7 +7,7 @@ import org.junit.Test;
  * Created by John Andersen on 5/23/16.
  */
 public class DLLTest {
-    public static final String TEST_VAR = "hello";
+    public static final String[] TEST_VAR = {"hello"};
 
     @Test
     public void testSize() throws Exception {
@@ -41,13 +41,13 @@ public class DLLTest {
         DLL test = new DLL();
         final int size = 10;
         for (int i = 0; i < size; i++) {
-            Assert.assertTrue(test.add(String.format("%s%d", TEST_VAR, i)));
+            Assert.assertTrue(test.add(new String[] {String.format("%s%d", TEST_VAR[0], i)}));
         }
         Assert.assertEquals(size, test.size());
-//        String[] array = test.toArray();
-//        for (int i = 0; i < size; i++) {
-//            Assert.assertTrue(test.add(String.format("%s%d", TEST_VAR, i)));
-//        }
+        Object[] array = test.toArray();
+        for (int i = 0; i < size; i++) {
+            Assert.assertEquals(((String[]) array[i])[0], String.format("%s%d", TEST_VAR[0], i));
+        }
     }
 
     @Test
