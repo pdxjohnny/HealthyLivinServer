@@ -57,6 +57,7 @@ public class DLLTest {
         for (int i = 0; i < size; i++) {
             Assert.assertTrue(test.add(new String[] {String.format("%s%d", TEST_VAR[0], i)}));
         }
+        test.clear();
         Assert.assertEquals(0, test.size());
     }
 

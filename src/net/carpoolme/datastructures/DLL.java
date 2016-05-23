@@ -287,6 +287,7 @@ public class DLL implements List {
         }
         next = null;
         data = null;
+        mSize = 0;
     }
 
     /**
