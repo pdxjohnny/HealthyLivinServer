@@ -52,31 +52,53 @@ public class DLLTest {
 
     @Test
     public void testClear() throws Exception {
-
+        DLL test = new DLL();
+        final int size = 10;
+        for (int i = 0; i < size; i++) {
+            Assert.assertTrue(test.add(new String[] {String.format("%s%d", TEST_VAR[0], i)}));
+        }
+        Assert.assertEquals(0, test.size());
     }
 
     @Test
     public void testGet() throws Exception {
-
+        DLL test = new DLL();
+        final int size = 10;
+        for (int i = 0; i < size; i++) {
+            Assert.assertTrue(test.add(new String[] {String.format("%s%d", TEST_VAR[0], i)}));
+        }
+        Assert.assertEquals(size, test.size());
+        for (int i = 0; i < size; i++) {
+            Assert.assertEquals(((String[]) test.get(i))[0], String.format("%s%d", TEST_VAR[0], i));
+        }
     }
 
     @Test
     public void testSet() throws Exception {
-
-    }
-
-    @Test
-    public void testAdd2() throws Exception {
-
-    }
-
-    @Test
-    public void testRemove2() throws Exception {
-
+        DLL test = new DLL();
+        final int size = 10;
+        for (int i = 0; i < size; i++) {
+            Assert.assertTrue(test.add(String.format("%s%d", TEST_VAR[0], i)));
+        }
+        Assert.assertEquals(size, test.size());
+        for (int i = 0; i < size; i++) {
+            String newValue = String.format("%s%d", TEST_VAR[0], i*i);
+            Assert.assertEquals(test.get(i), String.format("%s%d", TEST_VAR[0], i));
+            Assert.assertEquals(test.set(i, newValue), newValue);
+            Assert.assertEquals(test.get(i), newValue);
+        }
     }
 
     @Test
     public void testIndexOf() throws Exception {
-
+        DLL test = new DLL();
+        final int size = 10;
+        for (int i = 0; i < size; i++) {
+            Assert.assertTrue(test.add(String.format("%s%d", TEST_VAR[0], i)));
+        }
+        Assert.assertEquals(size, test.size());
+        for (int i = 0; i < size; i++) {
+            Assert.assertEquals(i, test.indexOf(String.format("%s%d", TEST_VAR[0], i)));
+        }
     }
 }
