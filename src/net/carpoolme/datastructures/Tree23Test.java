@@ -15,13 +15,27 @@ public class Tree23Test {
     private static final String TEST_KEY_3 = "c";
     private static final String TEST_KEY_4 = "d";
 
+    private SecureRandom random = new SecureRandom();
     private String randomString() {
-        return (new BigInteger(130, new SecureRandom())).toString(32);
+        return (new BigInteger(130, random)).toString(32);
     }
 
     @Test
     public void testCopy() throws Exception {
-
+        Tree23 test = new Tree23();
+        final int testSize = 100;
+        String[] testValues = new String[testSize];
+        String checkValue;
+        for (int i = 0; i < testSize; ++i) {
+            testValues[i] = randomString();
+            test.add(String.format("%010d", i), testValues[i]);
+        }
+        Tree23 copy = new Tree23(test);
+        Assert.assertEquals(testSize, copy.size());
+        for (int i = 0; i < testSize; ++i) {
+            checkValue = (String) copy.get(String.format("%010d", i));
+            Assert.assertEquals(testValues[i], checkValue);
+        }
     }
 
     @Test
@@ -52,18 +66,16 @@ public class Tree23Test {
     @Test
     public void testGet() throws Exception {
         Tree23 test = new Tree23();
-        final int testSize = 10;
-        String[] testKeys = new String[testSize];
+        final int testSize = 100;
         String[] testValues = new String[testSize];
         String checkValue;
         for (int i = 0; i < testSize; ++i) {
-            testKeys[i] = randomString();
             testValues[i] = randomString();
-            test.add(testKeys[i], testValues[i]);
+            test.add(String.format("%010d", i), testValues[i]);
         }
         Assert.assertEquals(testSize, test.size());
         for (int i = 0; i < testSize; ++i) {
-            checkValue = (String) test.get(testKeys[i]);
+            checkValue = (String) test.get(String.format("%010d", i));
             Assert.assertEquals(testValues[i], checkValue);
         }
     }

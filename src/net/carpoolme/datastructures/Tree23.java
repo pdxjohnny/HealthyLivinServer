@@ -27,9 +27,9 @@ public class Tree23 {
         setRight(null, null);
     }
 
-    public Tree23(final Tree23 copyNode) {
+    public Tree23(final Tree23 copyTree23) {
         this();
-        copySingle(copyNode);
+        clone(copyTree23);
     }
 
     public Tree23(final String copyKey, final Object copyData, final int mContains) {
@@ -70,9 +70,9 @@ public class Tree23 {
 
     /**
      * Copies the contents of copyTree into the tree is was called on
-     * @param copyTree The tree to copy from
+     * @param copyTree The tree to clone from
      */
-    public void copy(final Tree23 copyTree) {
+    public void clone(final Tree23 copyTree) {
         int i;
         if (copyTree == null || copyTree == this) {
             return;
@@ -81,13 +81,13 @@ public class Tree23 {
         for (i = (TREE23_NUM_NODES - 1); i >= 0; --i) {
             if (copyTree.nodes[i] != null) {
                 nodes[i] = new Tree23();
-                nodes[i].copy(copyTree.nodes[i]);
+                nodes[i].clone(copyTree.nodes[i]);
             }
         }
     }
 
-    public Tree23 add(final String addKey, final Object to_add) throws InvalidObjectException {
-        return addToTree(addKey, to_add);
+    public Tree23 add(final String addKey, final Object addData) throws InvalidObjectException {
+        return addToTree(addKey, addData);
     }
 
     private Tree23 addToTree(final String addKey, final Object addData) throws InvalidObjectException {
@@ -104,7 +104,7 @@ public class Tree23 {
             if (data[TREE23_LEFT] != null && data[TREE23_RIGHT] == null) {
                 if (0 > addKey.compareTo(keys[TREE23_LEFT])) {
                     // Left is active and less than left
-                    setRight(keys[TREE23_LEFT], data[TREE23_RIGHT]);
+                    setRight(keys[TREE23_LEFT], data[TREE23_LEFT]);
                     setLeft(addKey, addData);
                 } else {
                     // Left is active and greater than or equal to left
@@ -132,29 +132,29 @@ public class Tree23 {
                 }
             }
         } else {
-            if (data[TREE23_LEFT] != null && data[TREE23_RIGHT] == null &&
-                    nodes[TREE23_LEFT] != null && nodes[TREE23_RIGHT] != null) {
-                // Left is active right is not
-                if (0 > addKey.compareTo(keys[TREE23_LEFT])) {
-                    // Left is active and less than left
-                    send_up = push_up(nodes[TREE23_LEFT].add(addKey, addData));
-                } else {
-                    // Left is active and greater than or equal to left
-                    send_up = push_up(nodes[TREE23_RIGHT].add(addKey, addData));
-                }
-            } else if (data[TREE23_LEFT] != null && data[TREE23_RIGHT] != null &&
-                    nodes[TREE23_LEFT] != null && nodes[TREE23_MIDDLE] != null &&
-                    nodes[TREE23_RIGHT] != null) {
-                // Both active so we have a middle because we are not a leaf
-                if (0 > addKey.compareTo(keys[TREE23_LEFT])) {
-                    // Both active and less than left
-                    send_up = push_up(nodes[TREE23_LEFT].add(addKey, addData));
-                } else if (0 <= addKey.compareTo(keys[TREE23_RIGHT])) {
-                    // Both active and greater than or equal to right
-                    send_up = push_up(nodes[TREE23_RIGHT].add(addKey, addData));
-                } else {
-                    // Both active and in between left and right
-                    send_up = push_up(nodes[TREE23_MIDDLE].add(addKey, addData));
+            if (nodes[TREE23_LEFT] != null && nodes[TREE23_RIGHT] != null) {
+                if (data[TREE23_LEFT] != null && data[TREE23_RIGHT] == null) {
+                    // Left is active right is not
+                    if (0 > addKey.compareTo(keys[TREE23_LEFT])) {
+                        // Left is active and less than left
+                        send_up = push_up(nodes[TREE23_LEFT].addToTree(addKey, addData));
+                    } else {
+                        // Left is active and greater than or equal to left
+                        send_up = push_up(nodes[TREE23_RIGHT].addToTree(addKey, addData));
+                    }
+                } else if (data[TREE23_LEFT] != null && data[TREE23_RIGHT] != null &&
+                        nodes[TREE23_MIDDLE] != null) {
+                    // Both active so we have a middle because we are not a leaf
+                    if (0 > addKey.compareTo(keys[TREE23_LEFT])) {
+                        // Both active and less than left
+                        send_up = push_up(nodes[TREE23_LEFT].addToTree(addKey, addData));
+                    } else if (0 <= addKey.compareTo(keys[TREE23_RIGHT])) {
+                        // Both active and greater than or equal to right
+                        send_up = push_up(nodes[TREE23_RIGHT].addToTree(addKey, addData));
+                    } else {
+                        // Both active and in between left and right
+                        send_up = push_up(nodes[TREE23_MIDDLE].addToTree(addKey, addData));
+                    }
                 }
             }
         }
@@ -166,10 +166,7 @@ public class Tree23 {
     private Tree23 push_up(Tree23 pushed_up) {
         Tree23 send_up = null;
         // Nothing pushed up
-        if (pushed_up == null) {
-            return null;
-        }
-        if (this == pushed_up) {
+        if (pushed_up == null || this == pushed_up) {
             return null;
         }
         // If the child was full and I am full
@@ -263,12 +260,10 @@ public class Tree23 {
     }
 
     public String key(int index) throws IndexOutOfBoundsException {
-        int curr = 0;
         return getCount(index, new int[] {0}).keys[TREE23_LEFT];
     }
 
     public Object value(int index) throws IndexOutOfBoundsException {
-        int curr = 0;
         return getCount(index, new int[] {0}).data[TREE23_LEFT];
     }
 
