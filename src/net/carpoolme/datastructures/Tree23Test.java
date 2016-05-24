@@ -52,6 +52,25 @@ public class Tree23Test {
     @Test
     public void testGet() throws Exception {
         Tree23 test = new Tree23();
+        final int testSize = 10;
+        String[] testKeys = new String[testSize];
+        String[] testValues = new String[testSize];
+        String checkValue;
+        for (int i = 0; i < testSize; ++i) {
+            testKeys[i] = randomString();
+            testValues[i] = randomString();
+            test.add(testKeys[i], testValues[i]);
+        }
+        Assert.assertEquals(testSize, test.size());
+        for (int i = 0; i < testSize; ++i) {
+            checkValue = (String) test.get(testKeys[i]);
+            Assert.assertEquals(testValues[i], checkValue);
+        }
+    }
+
+    @Test
+    public void testGetLarge() throws Exception {
+        Tree23 test = new Tree23();
         Tree23 subTest;
         final int testSize = 100;
         String[] testKeys = new String[testSize];
@@ -70,12 +89,13 @@ public class Tree23Test {
         }
         Assert.assertEquals(testSize, test.size());
         for (int i = 0; i < testSize; ++i) {
-            subTest = new Tree23();
+            subTest = (Tree23) test.get(testKeys[i]);
+            Assert.assertNotEquals(subTest, null);
             for (int j = 0; j < testSize; ++j) {
                 String checkSubTestValue = (String) subTest.get(subTestKeys[i][j]);
+                Assert.assertNotEquals(subTest, null);
                 Assert.assertEquals(subTestValues[i][j], checkSubTestValue);
             }
-            Assert.assertEquals(testSize, subTest.size());
         }
     }
 
