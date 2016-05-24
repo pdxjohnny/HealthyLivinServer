@@ -1,4 +1,4 @@
-HealthyLivin Server
+HealthyLivin Server [![Build Status](https://drone.carpoolme.net/api/badges/pdxjohnny/HealthyLivinServer/status.svg)](https://drone.carpoolme.net/pdxjohnny/HealthyLivinServer)
 ---
 
 Provides data to the client applications
