@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_webserver" default="compile.module.webserver">
+  <dirname property="module.webserver.basedir" file="${ant.file.module_webserver}"/>
+  
+  
+  <property name="compiler.args.webserver" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="webserver.output.dir" value="${module.webserver.basedir}/out/production/Webserver"/>
+  <property name="webserver.testoutput.dir" value="${module.webserver.basedir}/out/test/Webserver"/>
+  
+  <path id="webserver.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="webserver.module.production.classpath">
+    <path refid="library.junit-4.12.classpath"/>
+  </path>
+  
+  <path id="webserver.runtime.production.module.classpath">
+    <pathelement location="${webserver.output.dir}"/>
+    <path refid="library.junit-4.12.classpath"/>
+  </path>
+  
+  <path id="webserver.module.classpath">
+    <pathelement location="${webserver.output.dir}"/>
+    <pathelement location="${basedir}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${basedir}/lib/junit-4.12.jar"/>
+    <path refid="library.junit-4.12.classpath"/>
+  </path>
+  
+  <path id="webserver.runtime.module.classpath">
+    <pathelement location="${webserver.testoutput.dir}"/>
+    <pathelement location="${webserver.output.dir}"/>
+    <pathelement location="${basedir}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${basedir}/lib/junit-4.12.jar"/>
+    <path refid="library.junit-4.12.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.webserver">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.webserver">
+    <patternset refid="excluded.from.module.webserver"/>
+  </patternset>
+  
+  <path id="webserver.module.sourcepath">
+    <dirset dir="${module.webserver.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.webserver" depends="compile.module.webserver.production,compile.module.webserver.tests" description="Compile module Webserver"/>
+  
+  <target name="compile.module.webserver.production" description="Compile module Webserver; production classes">
+    <mkdir dir="${webserver.output.dir}"/>
+    <javac destdir="${webserver.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.webserver}"/>
+      <bootclasspath refid="webserver.module.bootclasspath"/>
+      <classpath refid="webserver.module.production.classpath"/>
+      <src refid="webserver.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.webserver"/>
+    </javac>
+    
+    <copy todir="${webserver.output.dir}">
+      <fileset dir="${module.webserver.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.webserver.tests" depends="compile.module.webserver.production" description="compile module Webserver; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.webserver" description="cleanup module">
+    <delete dir="${webserver.output.dir}"/>
+    <delete dir="${webserver.testoutput.dir}"/>
+  </target>
+</project>

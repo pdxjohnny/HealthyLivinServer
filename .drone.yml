@@ -1,0 +1,26 @@
+build:
+  image: alpine:edge
+  commands:
+    - sh scripts/drone.sh
+publish:
+  github_release:
+    api_key: "$$GITHUB_API_KEY"
+    files:
+      - out/artifacts/Web/Web.jar
+      - out/artifacts/Database/Database.jar
+      - out/artifacts/Tests/Tests.jar
+    checksum:
+      - md5
+      - sha1
+      - sha256
+      - sha512
+      - adler32
+      - crc32
+notify:
+  email:
+    from: "$$EMAIL_USERNAME"
+    host: smtp.gmail.com
+    username: "$$EMAIL_USERNAME"
+    password: "$$EMAIL_PASSWORD"
+    recipients:
+      - "$$EMAIL_TO"
