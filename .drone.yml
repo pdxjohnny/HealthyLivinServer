@@ -1,7 +1,7 @@
 build:
-  image: alpine:edge
+  image: pdxjohnny/ant
   commands:
-    - sh scripts/drone.sh
+    - bash scripts/build.sh
 publish:
   github_release:
     api_key: "$$GITHUB_API_KEY"
