@@ -1,0 +1,8 @@
+FROM java:openjdk-8-jre-alpine
+
+ADD out/artifacts/Database/Database.jar /usr/bin/Database
+
+EXPOSE 8000
+
+ENTRYPOINT ["/usr/bin/java", "-jar"]
+CMD ["/usr/bin/Database"]

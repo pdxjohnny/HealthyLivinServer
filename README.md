@@ -16,3 +16,10 @@ Forwarding the port
 ```bash
 ssh -nNT -R 39487:localhost:7000 cl
 ```
+
+Deployment
+---
+
+```
+docker login registry.carpoolme.net
+```

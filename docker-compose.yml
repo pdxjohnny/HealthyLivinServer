@@ -1,0 +1,22 @@
+version: '2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-Web
+    restart: always
+    ports:
+      - "39487:8000"
+    networks:
+      - front-tier
+      - back-tier
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-Database
+    restart: always
+    networks:
+      - back-tier
+networks:
+  front-tier:
+  back-tier:

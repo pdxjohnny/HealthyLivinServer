@@ -16,6 +16,15 @@ publish:
       - sha512
       - adler32
       - crc32
+  sftp:
+    host: carpoolme.net
+    port: "$$SSH_PORT"
+    username: "$SSH_USER"
+    destination_path: "/home/$$SSH_USER/Documents/java/HeathyLivinServer/"
+    files:
+      - out/artifacts/Web/Web.jar
+      - out/artifacts/Database/Database.jar
+      - out/artifacts/Tests/Tests.jar
 notify:
   email:
     from: "$$EMAIL_USERNAME"
@@ -24,3 +33,24 @@ notify:
     password: "$$EMAIL_PASSWORD"
     recipients:
       - "$$EMAIL_TO"
+  irc:
+    prefix: build
+    recipient: pdxjohnny
+    nick: "$$IRC_NICK"
+    channel: "$$IRC_CHAN"
+    server:
+      host: chat.freenode.net
+      port: 6697
+      tls: true
+deploy:
+  ssh:
+    host: carpoolme.net
+    user: "$$SSH_USER"
+    port: "$$SSH_PORT"
+    commands:
+      - cd ~/Documents/java/HealthyLivinServer
+      - git pull
+      - docker-compose build
+      - docker-compose stop
+      - docker-compose rm -f
+      - docker-compose up -d
