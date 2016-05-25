@@ -16,15 +16,6 @@ publish:
       - sha512
       - adler32
       - crc32
-  sftp:
-    host: carpoolme.net
-    port: "$$SSH_PORT"
-    username: "$SSH_USER"
-    destination_path: "/home/$$SSH_USER/Documents/java/HeathyLivinServer/"
-    files:
-      - out/artifacts/Web/Web.jar
-      - out/artifacts/Database/Database.jar
-      - out/artifacts/Tests/Tests.jar
 notify:
   email:
     from: "$$EMAIL_USERNAME"
@@ -50,6 +41,7 @@ deploy:
     commands:
       - cd ~/Documents/java/HealthyLivinServer
       - git pull
+      - bash scripts/build.sh
       - docker-compose build
       - docker-compose stop
       - docker-compose rm -f
