@@ -15,9 +15,9 @@ public class DLL implements List {
     private Object data = null;
     private int mSize = 0;
 
-    DLL() {}
+    public DLL() {}
 
-    DLL(DLL mHead, DLL mPrev, Object mData) {
+    public DLL(DLL mHead, DLL mPrev, Object mData) {
         head = mHead;
         prev = mPrev;
         data = mData;

@@ -220,6 +220,14 @@ public class Tree23 {
         return send_up;
     }
 
+    public boolean contains(String searchKey) {
+        try {
+            get(searchKey);
+            return true;
+        } catch (IndexOutOfBoundsException ignored) {}
+        return false;
+    }
+
     public Object get(String searchKey) throws IndexOutOfBoundsException {
         if (searchKey == null) {
             return null;
@@ -313,12 +321,27 @@ public class Tree23 {
         throw new IndexOutOfBoundsException();
     }
 
+    public String[] keysToArray() {
+        String[] asArray = new String[contains];
+        for (int i = 0; i < contains; ++i) {
+            asArray[i] = key(i);
+        }
+        return asArray;
+    }
+
+    public Object[] toArray() {
+        Object[] asArray = new String[contains];
+        for (int i = 0; i < contains; ++i) {
+            asArray[i] = value(i);
+        }
+        return asArray;
+    }
+
     // Everything in tree to string
     @Override
     public String toString() {
         String asString = "";
-        int i;
-        for (i = 0; i < contains; ++i) {
+        for (int i = 0; i < contains; ++i) {
             asString += value(i).toString();
         }
         return asString;
