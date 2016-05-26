@@ -71,11 +71,34 @@ public class Table {
     }
 
     public synchronized boolean add(final Object[][] addData) throws IndexOutOfBoundsException {
-        return tableData.add(addData) && addIndexesToData((String[]) maintainIndexes.toArray(), addData);
+        String[] allIndexes = (String[]) maintainIndexes.toArray();
+        if (addIndexesToData(allIndexes, addData))
+            if (tableData.add(addData)) {
+                return true;
+            } else {
+                return false;
+            }
+        else {
+            return false;
+        }
     }
 
     public synchronized Object get(final int index) throws IndexOutOfBoundsException {
         return tableData.get(index);
+    }
+
+    public Object rawSearch(final String searchKey) {
+        Object[][] record;
+        String fieldData;
+        for (int i = 0; i < tableData.size(); ++i) {
+            record = (Object[][]) tableData.get(i);
+            fieldData = (String) parser.getKey(record, searchKey);
+            if (fieldData != null) {
+                return record;
+            }
+        }
+        // Did not find the data
+        throw new IndexOutOfBoundsException();
     }
 
     // Get with index fallback to raw search
@@ -86,16 +109,19 @@ public class Table {
             return index.get(searchKey);
         } catch (IndexOutOfBoundsException ignored) {}
         // Retrieve by dataTable search
-        Object[][] record;
-        String fieldData;
-        for (int i = 0; i < tableData.size(); ++i) {
-            record = (Object[][]) tableData.get(i);
-            fieldData = (String) parser.getKey(record, searchIndex);
-            if (fieldData != null) {
-                return fieldData;
-            }
+        return rawSearch(searchKey);
+    }
+
+    // Try each index fallback to raw search
+    public synchronized Object get(final String searchKey) throws IndexOutOfBoundsException {
+        // Retrieve by index lookup
+        Tree23 index;
+        for (int i = 0; i < searchIndexes.size(); ++i) {
+            try {
+                index = (Tree23) searchIndexes.value(i);
+                return index.get(searchKey);
+            } catch (IndexOutOfBoundsException ignored) {}
         }
-        // Did not find the data
-        throw new IndexOutOfBoundsException();
+        return rawSearch(searchKey);
     }
 }

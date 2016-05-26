@@ -9,8 +9,11 @@ import javax.security.auth.login.LoginException;
  * Created by John Andersen on 5/22/16.
  */
 public class User extends JWTUser {
-    public User(JWT mToken) {
+    private Database loginDB;
+
+    public User(JWT mToken, Database mLoginDB) {
         super(mToken);
+        loginDB = mLoginDB;
     }
 
     public boolean login() throws LoginException {

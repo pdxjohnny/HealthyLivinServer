@@ -58,4 +58,9 @@ public abstract class JWTProtectedWebserver extends BasicWebserver {
     public JWT getTokenAuth() {
         return tokenAuth;
     }
+
+    protected JWT setTokenSecret(String tokenSecret) {
+        tokenAuth = new JWT(tokenSecret);
+        return getTokenAuth();
+    }
 }
