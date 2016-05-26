@@ -38,7 +38,7 @@ public class DLLTest {
 
     @Test
     public void testToArray() throws Exception {
-        DLL test = new DLL();
+        DLL test = new DLL<String[]>();
         final int size = 10;
         for (int i = 0; i < size; i++) {
             Assert.assertTrue(test.add(new String[] {String.format("%s%d", TEST_VAR[0], i)}));
@@ -47,6 +47,21 @@ public class DLLTest {
         Object[] array = test.toArray();
         for (int i = 0; i < size; i++) {
             Assert.assertEquals(((String[]) array[i])[0], String.format("%s%d", TEST_VAR[0], i));
+        }
+    }
+
+
+    @Test
+    public void testToArrayCorrectType() throws Exception {
+        DLL<String> test = new DLL<String>();
+        final int size = 10;
+        for (int i = 0; i < size; i++) {
+            Assert.assertTrue(test.add(String.format("%s%d", TEST_VAR[0], i)));
+        }
+        Assert.assertEquals(size, test.size());
+        String[] array = test.toArray(new String[test.size()]);
+        for (int i = 0; i < size; i++) {
+            Assert.assertEquals(array[i], String.format("%s%d", TEST_VAR[0], i));
         }
     }
 

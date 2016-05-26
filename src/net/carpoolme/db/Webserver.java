@@ -14,8 +14,9 @@ public class Webserver extends JWTProtectedWebserver {
     public Webserver() {
         setTokenSecret("secret");
         Object[][] testUser = new Object[][] {
-            new Object[] {"id", 1},
-            new Object[] {"username", "testuser"},
+                new Object[] {"id", 1},
+                new Object[] {"username", "testuser"},
+                new Object[] {"password", "password"},
         };
         webDatabase.insert(Database.INTERNAL_USERS, testUser);
     }

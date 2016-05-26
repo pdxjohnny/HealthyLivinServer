@@ -18,17 +18,14 @@ public class Database extends Tree23 {
     }
 
     public synchronized boolean createTable(final String tableName, final String[] indexes) {
-        Tree23 index = null;
         try {
-            index = (Tree23) get(tableName);
+            get(tableName);
             return false;
         } catch (IndexOutOfBoundsException ignored) {}
-        if (index == null) {
-            try {
-                add(tableName, new Table(indexes));
-                return true;
-            } catch (IndexOutOfBoundsException | InvalidObjectException ignored) {}
-        }
+        try {
+            add(tableName, new Table(indexes));
+            return true;
+        } catch (IndexOutOfBoundsException | InvalidObjectException ignored) {}
         return false;
     }
 
@@ -43,12 +40,12 @@ public class Database extends Tree23 {
         return table.add(data);
     }
 
-    public synchronized Object select(final String tableName, final String searchIndex, final String searchKey) {
+    public synchronized Object[][] select(final String tableName, final Comparable searchIndex, final String searchKey) {
         Table table = (Table) get(tableName);
         return table.get(searchIndex, searchKey);
     }
 
-    public synchronized Object select(final String tableName, final String searchKey) {
+    public synchronized Object[][] select(final String tableName, final String searchKey) {
         Table table = (Table) get(tableName);
         return table.get(searchKey);
     }

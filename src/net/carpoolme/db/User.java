@@ -17,6 +17,18 @@ public class User extends JWTUser {
     }
 
     public boolean login() throws LoginException {
-        throw new LoginException("Invalid username or password");
+        System.out.println("Password: " + password);
+        if (password == null || password.length() < 1) {
+            throw new LoginException("You must provide your password");
+        }
+        Object[][] userData = loginDB.select(Database.INTERNAL_USERS, "username", username);
+        Object storedPassword = parser.getKey(userData, "password");
+        if (storedPassword == null) {
+            throw new LoginException("Something went wrong, you have no password");
+        }
+        if (!storedPassword.equals(password)) {
+            throw new LoginException("Invalid username or password");
+        }
+        return true;
     }
 }

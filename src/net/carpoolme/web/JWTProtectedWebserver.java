@@ -60,6 +60,7 @@ public abstract class JWTProtectedWebserver extends BasicWebserver {
     }
 
     protected JWT setTokenSecret(String tokenSecret) {
+        System.out.println("INFO: Replacing JWT with new secret");
         tokenAuth = new JWT(tokenSecret);
         return getTokenAuth();
     }

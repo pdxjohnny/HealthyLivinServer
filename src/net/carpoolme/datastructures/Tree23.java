@@ -15,7 +15,7 @@ public class Tree23 {
 
     private Tree23[] nodes = new Tree23[TREE23_NUM_NODES];
     private Object[] data = new Object[TREE23_NUM_NODES - 1];
-    private String[] keys = new String[TREE23_NUM_NODES - 1];
+    private Comparable[] keys = new Comparable[TREE23_NUM_NODES - 1];
     private int contains = 0;
 
     public Tree23() {
@@ -32,28 +32,28 @@ public class Tree23 {
         clone(copyTree23);
     }
 
-    public Tree23(final String copyKey, final Object copyData, final int mContains) {
+    public Tree23(final Comparable copyKey, final Object copyData, final int mContains) {
         this();
         contains = mContains;
         setLeft(copyKey, copyData);
     }
 
     // Sets the left to the data and marks the right as inactive
-    private Tree23 set(final String setKey, final Object setData) {
+    private Tree23 set(final Comparable setKey, final Object setData) {
         setLeft(setKey, setData);
         setRight(null, null);
         return this;
     }
 
     // Sets the left to the data and marks the right as inactive
-    private Tree23 setLeft(final String setKey, final Object setData) {
+    private Tree23 setLeft(final Comparable setKey, final Object setData) {
         data[TREE23_LEFT] = setData;
         keys[TREE23_LEFT] = setKey;
         return this;
     }
 
     // Sets the left to the data and marks the right as inactive
-    private Tree23 setRight(final String setKey, final Object setData) {
+    private Tree23 setRight(final Comparable setKey, final Object setData) {
         data[TREE23_RIGHT] = setData;
         keys[TREE23_RIGHT] = setKey;
         return this;
@@ -86,11 +86,11 @@ public class Tree23 {
         }
     }
 
-    public Tree23 add(final String addKey, final Object addData) throws InvalidObjectException {
+    public Tree23 add(final Comparable addKey, final Object addData) throws InvalidObjectException {
         return addToTree(addKey, addData);
     }
 
-    private Tree23 addToTree(final String addKey, final Object addData) throws InvalidObjectException {
+    private Tree23 addToTree(final Comparable addKey, final Object addData) throws InvalidObjectException {
         if (addData == null) {
             throw new InvalidObjectException("Cannot add a null object");
         }
@@ -220,7 +220,7 @@ public class Tree23 {
         return send_up;
     }
 
-    public boolean contains(String searchKey) {
+    public boolean contains(Comparable searchKey) {
         try {
             get(searchKey);
             return true;
@@ -228,7 +228,7 @@ public class Tree23 {
         return false;
     }
 
-    public Object get(String searchKey) throws IndexOutOfBoundsException {
+    public Object get(Comparable searchKey) throws IndexOutOfBoundsException {
         if (searchKey == null) {
             return null;
         }
@@ -267,7 +267,7 @@ public class Tree23 {
         throw new IndexOutOfBoundsException(String.format("Key: \'%s\' not found", searchKey));
     }
 
-    public String key(int index) throws IndexOutOfBoundsException {
+    public Comparable key(int index) throws IndexOutOfBoundsException {
         return getCount(index, new int[] {0}).keys[TREE23_LEFT];
     }
 
@@ -321,8 +321,8 @@ public class Tree23 {
         throw new IndexOutOfBoundsException();
     }
 
-    public String[] keysToArray() {
-        String[] asArray = new String[contains];
+    public Comparable[] keysToArray() {
+        Comparable[] asArray = new Comparable[contains];
         for (int i = 0; i < contains; ++i) {
             asArray[i] = key(i);
         }

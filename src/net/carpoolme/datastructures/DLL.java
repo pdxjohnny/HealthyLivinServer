@@ -8,16 +8,16 @@ import java.util.ListIterator;
 /**
  * Created by John Andersen on 5/22/16.
  */
-public class DLL implements List {
-    private DLL head = this;
-    private DLL next = null;
-    private DLL prev = null;
-    private Object data = null;
+public class DLL<E> implements List<E> {
+    private DLL<E> head = this;
+    private DLL<E> next = null;
+    private DLL<E> prev = null;
+    private E data = null;
     private int mSize = 0;
 
     public DLL() {}
 
-    public DLL(DLL mHead, DLL mPrev, Object mData) {
+    public DLL(DLL<E> mHead, DLL<E> mPrev, E mData) {
         head = mHead;
         prev = mPrev;
         data = mData;
@@ -84,11 +84,7 @@ public class DLL implements List {
      */
     @Override
     public boolean contains(Object o) {
-        return head.containsRecursive(o);
-    }
-
-    private boolean containsRecursive(Object o) {
-        return data != null && (data.equals(o) || (next != null && next.contains(o)));
+        return indexOf(o) != -1;
     }
 
     /**
@@ -155,18 +151,18 @@ public class DLL implements List {
      *                                       prevents it from being added to this list
      */
     @Override
-    public boolean add(Object o) {
+    public boolean add(E o) {
         return head.addRecursive(o);
     }
 
-    private boolean addRecursive(Object o) {
+    private boolean addRecursive(E o) {
         if (data == null) {
             data = o;
             incrementSize();
             return true;
         }
         if (next == null) {
-            next = new DLL(head, this, o);
+            next = new DLL<E>(head, this, o);
             incrementSize();
             return true;
         }
@@ -236,9 +232,8 @@ public class DLL implements List {
      * @see #add(Object)
      */
     @Override
-    public boolean addAll(Collection c) {
-        c.forEach(this::add);
-        return true;
+    public boolean addAll(Collection c) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -299,11 +294,11 @@ public class DLL implements List {
      *                                   (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     @Override
-    public Object get(int index) {
+    public E get(int index) {
         return head.getRecursive(index, 0);
     }
 
-    private Object getRecursive(int target, int index) {
+    private E getRecursive(int target, int index) {
         if (target == index) {
             return data;
         }
@@ -332,11 +327,11 @@ public class DLL implements List {
      *                                       (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     @Override
-    public Object set(int index, Object element) {
+    public E set(int index, E element) {
         return head.setRecursive(index, 0, element);
     }
 
-    private Object setRecursive(int target, int index, Object element) {
+    private E setRecursive(int target, int index, E element) {
         if (target == index) {
             data = element;
             return data;
@@ -367,7 +362,7 @@ public class DLL implements List {
      *                                       (<tt>index &lt; 0 || index &gt; size()</tt>)
      */
     @Override
-    public void add(int index, Object element) {
+    public void add(int index, E element) {
         add(element);
     }
 
@@ -385,13 +380,13 @@ public class DLL implements List {
      *                                       (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     @Override
-    public Object remove(int index) {
+    public E remove(int index) {
         return head.removeRecursive(index, 0);
     }
 
-    private Object removeRecursive(int target, int index) {
+    private E removeRecursive(int target, int index) {
         if (target == index) {
-            Object element = data;
+            E element = data;
             data = null;
             if (prev != null) {
                 prev.next = next;
@@ -428,11 +423,11 @@ public class DLL implements List {
     }
 
     private int indexOfRecursive(Object o, int index) {
-        if (data.equals(o)) {
-            return index;
-        }
         if (data == null) {
             return -1;
+        }
+        if (data.equals(o)) {
+            return index;
         }
         if (next == null) {
             return -1;
@@ -644,7 +639,11 @@ public class DLL implements List {
      * @throws NullPointerException if the specified array is null
      */
     @Override
-    public Object[] toArray(Object[] a) {
-        return toArray();
+    public <E> E[] toArray(E[] array) {
+        Object[] asArray = toArray();
+        for (int i = 0; i < asArray.length; ++i) {
+            array[i] = (E) asArray[i];
+        }
+        return array;
     }
 }

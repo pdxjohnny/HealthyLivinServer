@@ -10,11 +10,6 @@ import java.security.SecureRandom;
  * Created by John Andersen on 5/23/16.
  */
 public class Tree23Test {
-    private static final String TEST_KEY_1 = "a";
-    private static final String TEST_KEY_2 = "b";
-    private static final String TEST_KEY_3 = "c";
-    private static final String TEST_KEY_4 = "d";
-
     private SecureRandom random = new SecureRandom();
     private String randomString() {
         return (new BigInteger(130, random)).toString(32);
@@ -56,6 +51,7 @@ public class Tree23Test {
 
     @Test
     public void testKey() throws Exception {
+
     }
 
     @Test

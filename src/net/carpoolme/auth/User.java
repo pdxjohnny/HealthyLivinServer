@@ -1,6 +1,7 @@
 package net.carpoolme.auth;
 
 import net.carpoolme.utils.BasicParser;
+import net.carpoolme.utils.JSONParser;
 import net.carpoolme.utils.Parseable;
 
 import javax.security.auth.login.LoginException;
@@ -31,6 +32,7 @@ public abstract class User extends Object implements Parseable {
     }
 
     public boolean Unmarshal(Object[][] data) {
+        System.out.println("DEBG: User parsing " + new JSONParser().toString(data));
         id = (int) parser.getKey(data, "id", 0);
         username = (String) parser.getKey(data, "username", "Not Logged In");
         password = (String) parser.getKey(data, "password", "");

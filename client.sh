@@ -1,16 +1,16 @@
 #!/bin/bash
-set -x
+set -e
 
 if [ -z "$PORT" ]; then
-    PORT=80
+    PORT=8000
 fi
 if [ -z "$HOST" ]; then
-    HOST="https://healthylivin.carpoolme.net"
+    HOST="http://172.17.0.2"
 fi
 SERVER="$HOST:$PORT"
 
 login () {
-    curl --ssl --tlsv1.2 -w "\n" -X POST --data "$*" ${SERVER}/api/login/
+    curl -w "\n" -X POST --data "$*" ${SERVER}/api/login/
 }
 
 $1 "${@:2}"
