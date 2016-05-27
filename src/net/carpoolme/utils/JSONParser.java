@@ -24,16 +24,22 @@ public class JSONParser extends Parser {
     private String parsedString;
     private int lastIndex = 0;
 
+    @Override
     public String toString(Object[][] data) {
         String asJSON = "{";
         for (int i = 0; i < data.length; i++) {
-            asJSON += String.format("\"%s\": %s", data[i][0], correctFormat(data[i][1].toString()));
+            asJSON += String.format("\"%s\": %s", data[i][0], correctFormat(data[i][1]));
             if (i < data.length - 1) {
                 asJSON += ", ";
             }
         }
         asJSON += "}";
         return asJSON;
+    }
+
+    @Override
+    public String arrayToString(Object[] data) {
+        return String.format("[%s]", super.arrayToString(data));
     }
 
     public Object[][] parse(InputStream in) {

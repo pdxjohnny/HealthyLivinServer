@@ -3,7 +3,7 @@ package net.carpoolme.utils;
 /**
  * Created by John Andersen on 5/22/16.
  */
-public class BasicParser {
+public class BasicParser extends Object {
     public static final String DEFAULT_CHARSET = "UTF-8";
     public String CHARSET;
 
@@ -42,18 +42,34 @@ public class BasicParser {
         return addKey(obj, key, value);
     }
 
-    public String correctFormat(String string) {
-        switch (Strings.Type(string)) {
-            case Strings.TYPE_BOOL:
-                return String.format("%b", Strings.toBoolean(string));
-            case Strings.TYPE_INT:
-                return String.format("%d", Strings.toInt(string));
-            case Strings.TYPE_DOUBLE:
-                return String.format("%f", Strings.toDouble(string));
-            case Strings.TYPE_STRING:
-            default:
-                return String.format("\"%s\"", string);
+    public String toString(Object[][] data) {
+        return data.toString();
+    }
+
+    public String arrayToString(Object[] data) {
+        String result = "";
+        for (int i = 0; i < data.length; ++i) {
+            result += correctFormat(data[i]);
+            if (i < data.length - 1) {
+                result += ',';
+            }
         }
+        return result;
+    }
+
+    public String correctFormat(Object obj) {
+        if (obj instanceof Object[][]) {
+            return toString((Object[][]) obj);
+        } else if (obj instanceof Object[]) {
+            return arrayToString((Object[]) obj);
+        } else if (obj instanceof Boolean) {
+            return String.format("%b", obj);
+        } else if (obj instanceof Integer) {
+            return String.format("%d", obj);
+        } else if (obj instanceof Double) {
+            return String.format("%f", obj);
+        }
+        return String.format("\"%s\"", obj);
     }
 
     public Object correctType(Object obj) {

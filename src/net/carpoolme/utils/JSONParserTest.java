@@ -10,12 +10,39 @@ public class JSONParserTest {
     @org.junit.Test
     public void testToString() throws Exception {
         Parser parser = new JSONParser();
-        String[] id = new String[] {"uid", "42"};
-        String[] time = new String[] {"time", "-239798123.123490"};
-        String[] username = new String[] {"username", "pdxjohnny"};
-        String[][] data = new String[][] {id, time, username};
+        Object[] id = new Object[] {"uid", 42};
+        Object[] time = new Object[] {"time", -239798123.123490};
+        Object[] username = new Object[] {"username", "pdxjohnny"};
+        Object[] password = new Object[] {"password", "testpass"};
+        Object[][] data = new Object[][] {id, time, username, password};
         String output = parser.toString(data);
-        Assert.assertEquals("{\"uid\": 42, \"time\": -239798123.123490, \"username\": \"pdxjohnny\"}", output);
+        Assert.assertEquals("{\"uid\": 42, \"time\": -239798123.123490, \"username\": \"pdxjohnny\", \"password\": \"testpass\"}", output);
+    }
+
+    @org.junit.Test
+    public void testToStringWithArray() throws Exception {
+        Parser parser = new JSONParser();
+        Object[] id = new Object[] {"uid", 42};
+        Object[] array = new Object[] {"array", new Object[] {1, 2, 3, 4, 5}};
+        Object[] username = new Object[] {"username", "pdxjohnny"};
+        Object[][] data = new Object[][] {id, array, username};
+        String output = parser.toString(data);
+        Assert.assertEquals("{\"uid\": 42, \"array\": [1,2,3,4,5], \"username\": \"pdxjohnny\"}", output);
+    }
+
+    @org.junit.Test
+    public void testToStringNested() throws Exception {
+        Parser parser = new JSONParser();
+        Object[] id = new Object[] {"uid", 42};
+        Object[] array = new Object[] {"array", new Object[] {
+                new Object[][] {
+                        new Object[] {"small", "key"},
+                        new Object[] {"large", 12345},
+                }, 2, 3, 4, 5}};
+        Object[] username = new Object[] {"username", "pdxjohnny"};
+        Object[][] data = new Object[][] {id, array, username};
+        String output = parser.toString(data);
+        Assert.assertEquals("{\"uid\": 42, \"array\": [{\"small\": \"key\", \"large\": 12345},2,3,4,5], \"username\": \"pdxjohnny\"}", output);
     }
 
     @org.junit.Test
