@@ -21,12 +21,14 @@ public class JSONParserTest {
     @org.junit.Test
     public void testParse() throws Exception {
         Parser parser = new JSONParser();
-        String input = "{\"uid\": 42, \"time\": -239798123.123490, \"username\": \"pdxjohnny\"}";
+        String input = "{\"uid\": 42, \"time\": -239798123.123490, \"username\": \"pdxjohnny\", \"password\": \"testpass\"}";
         Object[][] output = parser.parse(input);
+        System.out.println(parser.toString(output));
         // Check all the data
         Assert.assertNotEquals(null, output);
         Assert.assertEquals(42, parser.getKey(output, "uid"));
         Assert.assertEquals(-239798123.123490, parser.getKey(output, "time"));
         Assert.assertEquals("pdxjohnny", parser.getKey(output, "username"));
+        Assert.assertEquals("testpass", parser.getKey(output, "password"));
     }
 }

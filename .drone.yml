@@ -33,16 +33,3 @@ notify:
       host: chat.freenode.net
       port: 6697
       tls: true
-deploy:
-  ssh:
-    host: carpoolme.net
-    user: "$$SSH_USER"
-    port: "$$SSH_PORT"
-    commands:
-      - cd ~/Documents/java/HealthyLivinServer
-      - git pull
-      - bash scripts/build.sh
-      - docker-compose build
-      - docker-compose stop
-      - docker-compose rm -f
-      - docker-compose up -d

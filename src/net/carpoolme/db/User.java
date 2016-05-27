@@ -17,7 +17,7 @@ public class User extends JWTUser {
     }
 
     public boolean login() throws LoginException {
-        System.out.println("Password: " + password);
+        System.out.println("DEBG: Password \"" + password + "\"");
         if (password == null || password.length() < 1) {
             throw new LoginException("You must provide your password");
         }
