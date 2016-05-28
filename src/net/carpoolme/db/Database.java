@@ -40,13 +40,8 @@ public class Database extends Tree23 {
         return table.add(data);
     }
 
-    public synchronized Object[][] select(final String tableName, final Comparable searchIndex, final String searchKey) {
+    public synchronized Object[][] select(final String tableName, final String searchIndex, final String matchValue) {
         Table table = (Table) get(tableName);
-        return table.get(searchIndex, searchKey);
-    }
-
-    public synchronized Object[][] select(final String tableName, final String searchKey) {
-        Table table = (Table) get(tableName);
-        return table.get(searchKey);
+        return table.get(searchIndex, matchValue);
     }
 }
