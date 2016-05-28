@@ -27,7 +27,7 @@ public class FileSystemStorage implements Storage {
     private void createBaseDir() throws FileSystemException {
         baseDirHandle = baseDir.toFile();
         if (!baseDirHandle.exists()) {
-            if (!baseDirHandle.mkdir()) throw new FileSystemException(baseDir.toAbsolutePath().toString());
+            if (!baseDirHandle.mkdirs()) throw new FileSystemException(baseDir.toAbsolutePath().toString());
         } else if (!baseDirHandle.isDirectory()) {
             throw new DirectoryNotEmptyException(baseDir.toAbsolutePath().toString());
         }
@@ -60,10 +60,8 @@ public class FileSystemStorage implements Storage {
                     return false;
                 }
             }
-        } else {
-            return remove.delete();
         }
-        return true;
+        return remove.delete();
     }
 
     @Override
