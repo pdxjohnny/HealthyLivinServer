@@ -17,7 +17,7 @@ public class TableTest {
     @Test
     public void testAll() throws Exception {
         Storage storage = new FileSystemStorage(Paths.get("tmp", "TableTest"));
-        Table table = new Table(storage, new String[]{"id", "username"});
+        Table table = new Table(storage, "id", new String[]{"id", "username"});
         table.add(new Object[][]{
                 new Object[]{"id", 42},
                 new Object[]{"username", "pdxjohnny"},
@@ -34,7 +34,7 @@ public class TableTest {
         final int loadTimes = 10;
         Table tableLoad;
         for (int i = 0; i < loadTimes; ++i) {
-            tableLoad = new Table(storage, new String[]{"id", "username"});
+            tableLoad = new Table(storage, "id", new String[]{"id", "username"});
             result = tableLoad.get("id", 42);
             Assert.assertEquals("{\"id\": 42, \"username\": \"pdxjohnny\", \"password\": \"test\"}", parser.toString(result));
             result = tableLoad.get("username", "pdxjohnny");

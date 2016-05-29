@@ -22,23 +22,26 @@ public class Database extends Tree23 {
     // private DLL clusterMembers = new DLL();
 
     public Database() {
-        createTable(INTERNAL_USERS, new String[] {"id", "username"});
         try {
             storage = new FileSystemStorage();
         } catch (FileSystemException e) {
-            System.out.println("ERRR: failed to initialized db filesystem, records will not be saved");
+            System.out.println("ERROR: failed to initialize db filesystem, records will not be saved");
             e.printStackTrace();
             storage = new MockStorage();
         }
+        createTable(INTERNAL_USERS, "id", new String[] {"id", "username"});
     }
 
-    public synchronized boolean createTable(final String tableName, final String[] indexes) {
+    public synchronized boolean createTable(final String tableName, final String primaryKey, final String[] indexes) {
         try {
             get(tableName);
             return false;
         } catch (IndexOutOfBoundsException ignored) {}
         try {
-            add(tableName, new Table(storage.downLevel(Paths.get(tableName)), indexes));
+            Path tablePath = Paths.get(tableName);
+            Storage downLevel = storage.downLevel(tablePath);
+            Table table = new Table(downLevel, primaryKey, indexes);
+            add(tableName, table);
             return true;
         } catch (IndexOutOfBoundsException | InvalidObjectException ignored) {}
         return false;

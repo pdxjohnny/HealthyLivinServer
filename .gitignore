@@ -1,6 +1,7 @@
 out/
 lib/
 tmp/
+storage/
 .idea/workspace.xml
 Webserver.iws
 *.swp

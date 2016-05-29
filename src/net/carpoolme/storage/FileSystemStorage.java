@@ -146,7 +146,9 @@ public class FileSystemStorage implements Storage {
         dir = Paths.get(baseDir.toString(), dir.toString());
         try {
             return new FileSystemStorage(dir);
-        } catch (FileSystemException ignored) {}
+        } catch (FileSystemException ignored) {
+            ignored.printStackTrace();
+        }
         return null;
     }
 }

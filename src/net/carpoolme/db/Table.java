@@ -6,7 +6,6 @@ import net.carpoolme.storage.Serializer;
 import net.carpoolme.storage.Storage;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.JSONParser;
-import net.carpoolme.utils.Strings;
 
 import java.io.InputStream;
 import java.io.InvalidObjectException;
@@ -28,9 +27,12 @@ public class Table {
     // For parsing records
     private BasicParser parser = new BasicParser();
 
+    private String primaryKey = "id";
+
     public Table() {}
 
-    public Table(final Storage mStorage, final String[] indexes) throws IndexOutOfBoundsException {
+    public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes) throws IndexOutOfBoundsException {
+        primaryKey = mPrimaryKey;
         storage = mStorage;
         addIndexes(indexes);
         loadFromStorage(storage);
@@ -93,13 +95,19 @@ public class Table {
     }
 
     public synchronized boolean add(final Object[][] addData) throws IndexOutOfBoundsException {
-        return add(Strings.random(), addData);
+        return add(parser.getKey(addData, primaryKey).toString(), addData);
     }
 
     public synchronized boolean add(final String storageKey, final Object[][] addData) throws IndexOutOfBoundsException {
-        System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
-        String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
-        return addIndexesToData(allIndexes, addData) && tableData.add(addData) && storage.writeRecord(Paths.get(storageKey), Serializer.toInputStream(addData));
+        // Only insert if it does not exist
+        try {
+            get(primaryKey, (Comparable) parser.getKey(addData, primaryKey));
+        } catch (IndexOutOfBoundsException ignored) {
+            System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
+            String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
+            return addIndexesToData(allIndexes, addData) && tableData.add(addData) && storage.writeRecord(Paths.get(storageKey), Serializer.toInputStream(addData));
+        }
+        return false;
     }
 
     public synchronized Object get(final int index) throws IndexOutOfBoundsException {
