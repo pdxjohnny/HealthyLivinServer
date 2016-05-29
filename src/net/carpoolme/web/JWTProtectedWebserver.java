@@ -17,10 +17,12 @@ import com.sun.net.httpserver.HttpServer;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 public abstract class JWTProtectedWebserver extends BasicWebserver {
     public static final String TOKEN_SECRET = Strings.random();
 
+    public static String LOGIN_REQUIRED = "{\"error\": \"Authorization is required to access this resource\"}";
     public static String LOGIN_FAILED = "{\"error\": \"Unknown login error\"}";
     public static String LOGIN_ERROR = "{\"error\": \"%s\"}";
 
@@ -33,6 +35,24 @@ public abstract class JWTProtectedWebserver extends BasicWebserver {
     }
 
     protected abstract User createUser();
+
+    protected Object[][] userData(HttpExchange t) {
+        List<String> authorization = t.getRequestHeaders().get("Authorization");
+        System.out.println(authorization.toString());
+        return null;
+    }
+
+    protected Object[][] requireLogin(HttpExchange t) throws IOException {
+        Object[][] userData = userData(t);
+        if (userData != null) {
+            return userData;
+        }
+        t.sendResponseHeaders(401, LOGIN_REQUIRED.length());
+        OutputStream os = t.getResponseBody();
+        os.write(LOGIN_REQUIRED.getBytes());
+        os.close();
+        return null;
+    }
 
     private class APILoginHandler implements HttpHandler {
         @Override
