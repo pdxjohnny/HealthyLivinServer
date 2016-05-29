@@ -15,23 +15,25 @@ public class FileSystemStorage implements Storage {
     private boolean writeEnabled = false;
 
     public FileSystemStorage() throws FileSystemException {
-        createBaseDir();
+        baseDirHandle = createDir(baseDir);
+        enableWrite();
     }
 
     public FileSystemStorage(Path mBaseDir) throws FileSystemException {
         baseDir = mBaseDir;
-        createBaseDir();
+        baseDirHandle = createDir(baseDir);
+        enableWrite();
     }
 
     // Makes sure we can read and write from the baseDir directory
-    private void createBaseDir() throws FileSystemException {
-        baseDirHandle = baseDir.toFile();
-        if (!baseDirHandle.exists()) {
-            if (!baseDirHandle.mkdirs()) throw new FileSystemException(baseDir.toAbsolutePath().toString());
-        } else if (!baseDirHandle.isDirectory()) {
-            throw new DirectoryNotEmptyException(baseDir.toAbsolutePath().toString());
+    private static File createDir(Path dir) throws FileSystemException {
+        File dirHandle = dir.toFile();
+        if (!dirHandle.exists()) {
+            if (!dirHandle.mkdirs()) throw new FileSystemException(dir.toAbsolutePath().toString());
+        } else if (!dirHandle.isDirectory()) {
+            throw new DirectoryNotEmptyException(dir.toAbsolutePath().toString());
         }
-        enableWrite();
+        return dirHandle;
     }
 
     @Override
@@ -55,9 +57,11 @@ public class FileSystemStorage implements Storage {
         }
         if (remove.isDirectory()) {
             File[] files = remove.listFiles();
-            for (File file : files) {
-                if (!destroyRecursive(file)) {
-                    return false;
+            if (files != null) {
+                for (File file : files) {
+                    if (!destroyRecursive(file)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -81,13 +85,49 @@ public class FileSystemStorage implements Storage {
         if (!writeEnabled) {
             return true;
         }
-        System.out.println(recordPath.toString());
-//        FileOutputStream output = new FileOutputStream(recordPath.toFile());
-        return false;
+        Path filePath = Paths.get(baseDir.toString(), recordPath.toString());
+        Path fileDirPath = filePath.getParent();
+        try {
+            createDir(fileDirPath);
+        } catch (FileSystemException e) {
+            return false;
+        }
+        FileOutputStream outputStream;
+        try {
+            outputStream = new FileOutputStream(filePath.toFile());
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+        byte[] buffer;
+        final int maxBuffer = 4095;
+        int shouldRead;
+        int read = 1;
+        try {
+            while (read > 0) {
+                shouldRead = in.available();
+                if (shouldRead > maxBuffer) {
+                    shouldRead %= maxBuffer;
+                    ++shouldRead;
+                }
+                buffer = new byte[shouldRead];
+                read = in.read(buffer);
+                if (shouldRead < 1) {
+                    break;
+                }
+                outputStream.write(buffer);
+            }
+        } catch(IOException ignored) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public OutputStream readRecord(Path recordPath) {
+    public InputStream readRecord(Path recordPath) {
+        Path filePath = Paths.get(baseDir.toString(), recordPath.toString());
+        try {
+            return new FileInputStream(filePath.toFile());
+        } catch (FileNotFoundException ignored) {}
         return null;
     }
 }

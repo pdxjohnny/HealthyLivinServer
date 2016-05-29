@@ -3,7 +3,6 @@ package net.carpoolme.storage;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.zip.ZipOutputStream;
@@ -56,7 +55,7 @@ public class ZipStorage implements Storage {
     }
 
     @Override
-    public OutputStream readRecord(Path recordPath) {
+    public InputStream readRecord(Path recordPath) {
         return null;
     }
 }

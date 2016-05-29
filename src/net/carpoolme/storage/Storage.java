@@ -1,7 +1,6 @@
 package net.carpoolme.storage;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
 
 /**
@@ -15,5 +14,5 @@ public interface Storage {
     boolean enableWrite();
     boolean disableWrite();
     boolean writeRecord(Path recordPath, InputStream in);
-    OutputStream readRecord(Path recordPath);
+    InputStream readRecord(Path recordPath);
 }
