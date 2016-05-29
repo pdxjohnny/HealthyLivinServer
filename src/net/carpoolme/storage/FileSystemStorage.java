@@ -77,7 +77,7 @@ public class FileSystemStorage implements Storage {
     @Override
     public boolean disableWrite() {
         writeEnabled = false;
-        return false;
+        return true;
     }
 
     @Override
@@ -128,6 +128,25 @@ public class FileSystemStorage implements Storage {
         try {
             return new FileInputStream(filePath.toFile());
         } catch (FileNotFoundException ignored) {}
+        return null;
+    }
+
+    @Override
+    public InputStream[] allRecords() {
+        String[] allFiles = baseDirHandle.list();
+        InputStream[] allRecords = new InputStream[allFiles.length];
+        for (int i = 0; i < allFiles.length; ++i) {
+            allRecords[i] = readRecord(Paths.get(allFiles[i]));
+        }
+        return allRecords;
+    }
+
+    @Override
+    public Storage downLevel(Path dir) {
+        dir = Paths.get(baseDir.toString(), dir.toString());
+        try {
+            return new FileSystemStorage(dir);
+        } catch (FileSystemException ignored) {}
         return null;
     }
 }

@@ -58,4 +58,14 @@ public class ZipStorage implements Storage {
     public InputStream readRecord(Path recordPath) {
         return null;
     }
+
+    @Override
+    public InputStream[] allRecords() {
+        return new InputStream[0];
+    }
+
+    @Override
+    public Storage downLevel(Path dir) {
+        return null;
+    }
 }

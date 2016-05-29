@@ -15,4 +15,6 @@ public interface Storage {
     boolean disableWrite();
     boolean writeRecord(Path recordPath, InputStream in);
     InputStream readRecord(Path recordPath);
+    InputStream[] allRecords();
+    Storage downLevel(Path dir);
 }

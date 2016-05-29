@@ -2,15 +2,22 @@ package net.carpoolme.db;
 
 import net.carpoolme.datastructures.DLL;
 import net.carpoolme.datastructures.Tree23;
+import net.carpoolme.storage.Serializer;
+import net.carpoolme.storage.Storage;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.JSONParser;
+import net.carpoolme.utils.Strings;
 
+import java.io.InputStream;
 import java.io.InvalidObjectException;
+import java.nio.file.Paths;
 
 /**
  * Created by John Andersen on 5/26/16.
  */
 public class Table {
+    private Storage storage;
+
     // Stores all of our data
     private DLL<Object[][]> tableData = new DLL<Object[][]>();
     // The indexes for quick access to records
@@ -23,8 +30,19 @@ public class Table {
 
     public Table() {}
 
-    public Table(final String[] indexes) throws IndexOutOfBoundsException {
+    public Table(final Storage mStorage, final String[] indexes) throws IndexOutOfBoundsException {
+        storage = mStorage;
         addIndexes(indexes);
+        loadFromStorage(storage);
+    }
+
+    public synchronized void loadFromStorage(Storage mStorage) {
+        mStorage.disableWrite();
+        InputStream[] records = mStorage.allRecords();
+        for (int i = 0; i < records.length; ++i) {
+            add((Object[][]) Serializer.toObject(records[i]));
+        }
+        mStorage.enableWrite();
     }
 
     public synchronized boolean addIndexes(final String[] indexes) throws IndexOutOfBoundsException {
@@ -75,9 +93,13 @@ public class Table {
     }
 
     public synchronized boolean add(final Object[][] addData) throws IndexOutOfBoundsException {
-        System.out.println("DEBG: Inserting " + new JSONParser().toString(addData));
+        return add(Strings.random(), addData);
+    }
+
+    public synchronized boolean add(final String storageKey, final Object[][] addData) throws IndexOutOfBoundsException {
+        System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
         String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
-        return addIndexesToData(allIndexes, addData) && tableData.add(addData);
+        return addIndexesToData(allIndexes, addData) && tableData.add(addData) && storage.writeRecord(Paths.get(storageKey), Serializer.toInputStream(addData));
     }
 
     public synchronized Object get(final int index) throws IndexOutOfBoundsException {
@@ -108,7 +130,7 @@ public class Table {
                 return (Object[][]) index.get(matchData);
             } catch (IndexOutOfBoundsException ignored) {}
         } catch (IndexOutOfBoundsException ignore) {
-            System.out.printf("DEBG: No index by the name of \"%s\" found\n", searchIndex);
+            System.out.printf("DEBUG: No index by the name of \"%s\" found\n", searchIndex);
         }
         // Retrieve by dataTable search
         return rawSearch(searchIndex, matchData);
