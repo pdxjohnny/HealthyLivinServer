@@ -60,6 +60,6 @@ public class Database extends Tree23 {
 
     public synchronized Table select(final String tableName, final String searchIndex, final String matchValue) {
         Table table = (Table) get(tableName);
-        return table.get(searchIndex, matchValue);
+        return table.select(searchIndex, matchValue);
     }
 }

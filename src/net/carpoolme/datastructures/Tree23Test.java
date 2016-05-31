@@ -110,14 +110,13 @@ public class Tree23Test {
     @Test
     public void testGetAll() throws Exception {
         Tree23 test = new Tree23();
-        final int testSize = 20;
+        final int testSize = 100;
         int numAdded = 0;
         String[] testValues = new String[testSize];
         String checkValue;
         for (int i = 0; i < testSize; ++i) {
             if (i % 5 == 0) {
                 testValues[i] = "8086";
-                System.out.printf("Adding \"%s\" as %s\n", testValues[i], String.format("%010d", i));
                 test.add(testValues[i], String.format("%010d", i));
                 ++numAdded;
             } else {
@@ -134,12 +133,10 @@ public class Tree23Test {
         }
         Tree23 testAllMatching = test.getAll("8086");
         Assert.assertEquals(numAdded, testAllMatching.size());
-        System.out.println(testAllMatching.toString());
         int j = 0;
         for (int i = 0; i < testSize; ++i) {
             if (i % 5 == 0) {
                 checkValue = (String) testAllMatching.value(j);
-                System.out.printf("Retrieving \"%s\" should be %s\n", testValues[i], String.format("%010d", i));
                 Assert.assertEquals(String.format("%010d", i), checkValue);
                 ++j;
             }

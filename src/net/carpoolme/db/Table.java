@@ -22,6 +22,8 @@ public class Table extends DLL<Object[][]> {
     // Maintain these indexes on each record
     private DLL<String> maintainIndexes = new DLL<String>();
 
+    private boolean duplicatesAllowed = true;
+
     // For parsing records
     private BasicParser parser = new BasicParser();
 
@@ -31,9 +33,12 @@ public class Table extends DLL<Object[][]> {
         this(table.storage, table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
     }
 
-//    public Table(final Table table, final Tree23 tree23) {
-//        this(table.storage, table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
-//    }
+    public Table(final Table table, final Tree23 tree23) {
+        this(table.storage, table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
+        for (int i = 0; i < tree23.size(); ++i) {
+            add((Object[][]) tree23.value(i));
+        }
+    }
 
     public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes) {
         this(mStorage, mPrimaryKey, indexes, null);
@@ -115,7 +120,11 @@ public class Table extends DLL<Object[][]> {
     public synchronized boolean add(final String storageKey, final Object[][] addData) throws IndexOutOfBoundsException {
         // Only insert if it does not exist
         try {
-            get(primaryKey, (Comparable) parser.getKey(addData, primaryKey));
+            if (!duplicatesAllowed) {
+                get(primaryKey, (Comparable) parser.getKey(addData, primaryKey));
+            } else {
+                throw new IndexOutOfBoundsException();
+            }
         } catch (IndexOutOfBoundsException ignored) {
             System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
             String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
@@ -146,7 +155,7 @@ public class Table extends DLL<Object[][]> {
     }
 
     // Get with index fallback to raw search
-    public synchronized Table get(final String searchIndex, final Comparable matchData) throws IndexOutOfBoundsException {
+    public synchronized Table select(final String searchIndex, final Comparable matchData) throws IndexOutOfBoundsException {
         // Retrieve by index lookup
         Tree23 index;
         try {
@@ -156,7 +165,28 @@ public class Table extends DLL<Object[][]> {
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData);
         }
-//        return new Table(this, index.get(matchData));
-        return null;
+        return new Table(this, index.getAll(matchData));
+    }
+
+    // Get with index fallback to raw search
+    public synchronized Object[][] get(final String searchIndex, final Comparable matchData) throws IndexOutOfBoundsException {
+        // Retrieve by index lookup
+        Tree23 index;
+        try {
+            index = (Tree23) searchIndexes.get(searchIndex);
+        } catch (IndexOutOfBoundsException ignored) {
+            System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
+            // Retrieve by dataTable search
+            return rawSearch(searchIndex, matchData).get(0);
+        }
+        return (Object[][]) index.get(matchData);
+    }
+
+    public synchronized void allowDuplicates() {
+        duplicatesAllowed = true;
+    }
+
+    public synchronized void disableDuplicates() {
+        duplicatesAllowed = false;
     }
 }
