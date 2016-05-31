@@ -21,7 +21,7 @@ public class User extends JWTUser {
         if (password == null || password.length() < 1) {
             throw new LoginException("You must provide your password");
         }
-        Object[][] userData = loginDB.select(Database.INTERNAL_USERS, "username", username);
+        Object[][] userData = loginDB.select(Database.INTERNAL_USERS, "username", username).get(0);
         Object storedPassword = parser.getKey(userData, "password");
         if (storedPassword == null) {
             throw new LoginException("Something went wrong, you have no password");

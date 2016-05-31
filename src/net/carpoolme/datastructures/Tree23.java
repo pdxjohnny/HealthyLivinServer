@@ -267,6 +267,41 @@ public class Tree23 {
         throw new IndexOutOfBoundsException(String.format("Key: \'%s\' not found", searchKey));
     }
 
+    public Tree23 getAll(Comparable searchKey) {
+        if (searchKey == null) {
+            return null;
+        }
+        return getAllRecursive(searchKey, new Tree23());
+    }
+
+    private Tree23 getAllRecursive(Comparable searchKey, Tree23 addTo) {
+        // Look of the index on the left, that will be index 0 if its the leftmost node
+        if (nodes[TREE23_LEFT] != null) {
+            nodes[TREE23_LEFT].getAllRecursive(searchKey, addTo);
+        }
+        // Check if this node is the index
+        if (data[TREE23_LEFT] != null && searchKey.equals(keys[TREE23_LEFT])) {
+            try {
+                addTo.add(keys[TREE23_LEFT], data[TREE23_LEFT]);
+            } catch (InvalidObjectException ignored) {}
+        }
+        // Look of the index down the middle
+        if (nodes[TREE23_MIDDLE] != null) {
+            nodes[TREE23_MIDDLE].getAllRecursive(searchKey, addTo);
+        }
+        // Check if this node is the index
+        if (data[TREE23_RIGHT] != null && searchKey.equals(keys[TREE23_RIGHT])) {
+            try {
+                addTo.add(keys[TREE23_RIGHT], data[TREE23_RIGHT]);
+            } catch (InvalidObjectException ignored) {}
+        }
+        // Look of the index on the right
+        if (nodes[TREE23_RIGHT] != null) {
+            nodes[TREE23_RIGHT].getAllRecursive(searchKey, addTo);
+        }
+        return addTo;
+    }
+
     public Comparable key(int index) throws IndexOutOfBoundsException {
         return getCount(index, new int[] {0}).keys[TREE23_LEFT];
     }

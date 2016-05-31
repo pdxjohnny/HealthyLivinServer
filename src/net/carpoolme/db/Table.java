@@ -28,16 +28,27 @@ public class Table extends DLL<Object[][]> {
     private String primaryKey = "id";
 
     public Table(final Table table) {
-        primaryKey = table.primaryKey;
-        storage = table.storage;
-        addIndexes(table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
-        loadFromStorage(storage);
+        this(table.storage, table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
     }
 
-    public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes) throws IndexOutOfBoundsException {
+//    public Table(final Table table, final Tree23 tree23) {
+//        this(table.storage, table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
+//    }
+
+    public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes) {
+        this(mStorage, mPrimaryKey, indexes, null);
+    }
+
+    public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes, final String addIndex) {
+        String[] newIndexes = indexes;
+        if (addIndex != null) {
+            newIndexes = new String[indexes.length + 1];
+            newIndexes[0] = addIndex;
+            System.arraycopy(indexes, 0, newIndexes, 1, indexes.length);
+        }
         primaryKey = mPrimaryKey;
         storage = mStorage;
-        addIndexes(indexes);
+        addIndexes(newIndexes);
         loadFromStorage(storage);
     }
 
@@ -113,22 +124,29 @@ public class Table extends DLL<Object[][]> {
         return false;
     }
 
-    public Object[][] rawSearch(final String searchKey, final Comparable matchData) {
+    public Table rawSearch(final String searchKey, final Comparable matchData) {
+        Table table = null;
         Object[][] record;
         Comparable fieldData;
         for (int i = 0; i < size(); ++i) {
             record = get(i);
             fieldData = (Comparable) parser.getKey(record, searchKey);
             if (fieldData != null && fieldData.equals(matchData)) {
-                return record;
+                if (table == null) {
+                    table = new Table(storage, searchKey, maintainIndexes.toArray(new String[maintainIndexes.size()]), searchKey);
+                }
+                table.add(record);
             }
         }
-        // Did not find the data
-        throw new IndexOutOfBoundsException();
+        if (table == null) {
+            // Did not find the data
+            throw new IndexOutOfBoundsException();
+        }
+        return table;
     }
 
     // Get with index fallback to raw search
-    public synchronized Object[][] get(final String searchIndex, final Comparable matchData) throws IndexOutOfBoundsException {
+    public synchronized Table get(final String searchIndex, final Comparable matchData) throws IndexOutOfBoundsException {
         // Retrieve by index lookup
         Tree23 index;
         try {
@@ -138,6 +156,7 @@ public class Table extends DLL<Object[][]> {
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData);
         }
-        return (Object[][]) index.get(matchData);
+//        return new Table(this, index.get(matchData));
+        return null;
     }
 }
