@@ -14,11 +14,9 @@ import java.nio.file.Paths;
 /**
  * Created by John Andersen on 5/26/16.
  */
-public class Table {
+public class Table extends DLL<Object[][]> {
     private Storage storage;
 
-    // Stores all of our data
-    private DLL<Object[][]> tableData = new DLL<Object[][]>();
     // The indexes for quick access to records
     private Tree23 searchIndexes = new Tree23();
     // Maintain these indexes on each record
@@ -29,7 +27,12 @@ public class Table {
 
     private String primaryKey = "id";
 
-    public Table() {}
+    public Table(final Table table) {
+        primaryKey = table.primaryKey;
+        storage = table.storage;
+        addIndexes(table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
+        loadFromStorage(storage);
+    }
 
     public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes) throws IndexOutOfBoundsException {
         primaryKey = mPrimaryKey;
@@ -66,8 +69,8 @@ public class Table {
         }
         // Now add the indexes to the existing entries in the table
         Object[][] record;
-        for (int i = 0; i < tableData.size(); ++i) {
-            record = tableData.get(i);
+        for (int i = 0; i < size(); ++i) {
+            record = get(i);
             addIndexesToData(indexes, record);
         }
         return true;
@@ -105,20 +108,16 @@ public class Table {
         } catch (IndexOutOfBoundsException ignored) {
             System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
             String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
-            return addIndexesToData(allIndexes, addData) && tableData.add(addData) && storage.writeRecord(Paths.get(storageKey), Serializer.toInputStream(addData));
+            return addIndexesToData(allIndexes, addData) && super.add(addData) && storage.writeRecord(Paths.get(storageKey), Serializer.toInputStream(addData));
         }
         return false;
-    }
-
-    public synchronized Object get(final int index) throws IndexOutOfBoundsException {
-        return tableData.get(index);
     }
 
     public Object[][] rawSearch(final String searchKey, final Comparable matchData) {
         Object[][] record;
         Comparable fieldData;
-        for (int i = 0; i < tableData.size(); ++i) {
-            record = tableData.get(i);
+        for (int i = 0; i < size(); ++i) {
+            record = get(i);
             fieldData = (Comparable) parser.getKey(record, searchKey);
             if (fieldData != null && fieldData.equals(matchData)) {
                 return record;
@@ -134,13 +133,11 @@ public class Table {
         Tree23 index;
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
-            try {
-                return (Object[][]) index.get(matchData);
-            } catch (IndexOutOfBoundsException ignored) {}
-        } catch (IndexOutOfBoundsException ignore) {
-            System.out.printf("DEBUG: No index by the name of \"%s\" found\n", searchIndex);
+        } catch (IndexOutOfBoundsException ignored) {
+            System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
+            // Retrieve by dataTable search
+            return rawSearch(searchIndex, matchData);
         }
-        // Retrieve by dataTable search
-        return rawSearch(searchIndex, matchData);
+        return (Object[][]) index.get(matchData);
     }
 }

@@ -16,16 +16,15 @@ public class CLIAddFood extends CLICommand {
     CLIAddFood(Database mDatabase, String[] mArgv, String mPreviousCommands) {
         super(mDatabase, mArgv, mPreviousCommands);
         COMMAND_NAME = "food";
-//        database.createTable(COMMAND_NAME, "name", new String[]{"name", "category"});
     }
 
     @Override
     public void run() {
-        System.out.println("Please input a food in the form of:");
-        System.out.println("    name, category");
+        System.out.printf("Please input a food in the form of name, category: ");
         Food food = new Food(database);
         food.fromStream(System.in);
         System.out.println("Here's the food you input");
         food.toStream(System.out);
+        food.save();
     }
 }
