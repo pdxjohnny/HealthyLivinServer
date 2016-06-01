@@ -9,11 +9,11 @@ import net.carpoolme.db.Database;
 public class CLIList extends CLICommand {
     CLIList(Database mDatabase, String[] mArgv, String mPreviousCommands) {
         super(mDatabase, mArgv, mPreviousCommands);
-        COMMAND_NAME = "add";
+        COMMAND_NAME = "list";
         subCommands = new Object[][]{
-                new Object[]{"food", new CLIAddFood(database, downArgLevel(), commandsSoFar())},
-//                new Object[]{"store", new CLIAddStore(database, downArgLevel(), commandsSoFar())},
-//                new Object[]{"restaurant", new CLIAddRestaurant(database, downArgLevel(), commandsSoFar())},
+                new Object[]{"food", new CLIListFood(database, downArgLevel(), commandsSoFar())},
+//                new Object[]{"store", new CLIListStore(database, downArgLevel(), commandsSoFar())},
+//                new Object[]{"restaurant", new CLIListRestaurant(database, downArgLevel(), commandsSoFar())},
         };
     }
 }

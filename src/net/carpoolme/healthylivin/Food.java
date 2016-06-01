@@ -1,6 +1,7 @@
 package net.carpoolme.healthylivin;
 
 import net.carpoolme.db.Database;
+import net.carpoolme.db.Table;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.JSONParser;
 
@@ -11,7 +12,7 @@ public class Food {
     public static final String DEFAULT_NAME = "Unknown food";
     public static final String DEFAULT_CATEGORY = "No category for this food";
 
-    private Database database;
+    protected Database database;
 
     // All protected so derived classes can change to what they need
     protected BasicParser parser = new BasicParser();
@@ -36,6 +37,10 @@ public class Food {
         name = (String) parser.getKey(data, "name", DEFAULT_NAME);
         category = (String) parser.getKey(data, "category", DEFAULT_CATEGORY);
         return true;
+    }
+
+    public Table load() {
+        return (Table) database.get(getClass().getSimpleName());
     }
 
     public boolean save() {

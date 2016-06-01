@@ -32,8 +32,10 @@ public class CLICommand {
         for (int i = 0; i < subCommands.length; ++i) {
             if (subCommands[i].length > 1 && subCommands[i][0].equals(argv[0])) {
                 ((CLICommand) subCommands[i][1]).run();
+                return;
             }
         }
+        displayUsage();
     }
 
     protected String[] downArgLevel() {
