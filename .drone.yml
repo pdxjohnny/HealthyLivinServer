@@ -6,9 +6,7 @@ publish:
   github_release:
     api_key: "$$GITHUB_API_KEY"
     files:
-      - out/artifacts/Web/Web.jar
-      - out/artifacts/Database/Database.jar
-      - out/artifacts/Tests/Tests.jar
+      - out/artifacts/cli/cli.jar
     checksum:
       - md5
       - sha1
