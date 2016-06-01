@@ -21,7 +21,7 @@ public class Food {
 
     public Food(Database mDatabase) {
         database = mDatabase;
-        database.createTable(getClass().getName(), "name", new String[]{"name", "category"});
+        database.createTable(getClass().getSimpleName(), "name", new String[]{"name", "category"});
     }
 
     public Object[][] Marshal() {
@@ -38,16 +38,7 @@ public class Food {
         return true;
     }
 
-    public boolean load() {
-        if (name.equals(DEFAULT_NAME)) {
-            return false;
-        }
-        System.out.println("DEBUG: Loading food from table - " + this.getClass().getName());
-//        final Object[][] food = database.select(getClass().getName(), "name", name);
-        return false;
-    }
-
     public boolean save() {
-        return database.insert(getClass().getName(), Marshal());
+        return database.insert(getClass().getSimpleName(), Marshal());
     }
 }
