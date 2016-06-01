@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 /**
  * Created by John Andersen on 5/28/16.
@@ -103,6 +104,30 @@ public class TableTest {
                 Assert.assertEquals("{\"id\": 42, \"username\": \"pdxjohnny-42\"}", parser.toString(current));
                 ++j;
             }
+        }
+        storage.destroy();
+    }
+
+    @Test
+    public void testOrderBy() throws Exception {
+        Storage storage = new MockStorage();
+        Table table = new Table(storage, "id", new String[]{"id"});
+        final int tableSize = 100;
+        int [] shouldBe = new int[tableSize];
+        for (int i = 0; i < tableSize; ++i) {
+            shouldBe[i] = (int) (Math.random() * 1000);
+            table.add(new Object[][]{
+                    new Object[]{"id", shouldBe[i]},
+                    new Object[]{"username", String.format("pdxjohnny-%d", shouldBe[i])}
+            });
+        }
+        Arrays.sort(shouldBe);
+        Parser parser = new JSONParser();
+        Table result = table.orderBy("id");
+        Object[][] current;
+        for (int i = 0; i < tableSize; ++i) {
+            current = result.get(i);
+            Assert.assertEquals(String.format("{\"id\": %d, \"username\": \"pdxjohnny-%d\"}", shouldBe[i], shouldBe[i]), parser.toString(current));
         }
         storage.destroy();
     }

@@ -189,4 +189,16 @@ public class Table extends DLL<Object[][]> {
     public synchronized void disableDuplicates() {
         duplicatesAllowed = false;
     }
+
+    public synchronized Table orderBy(final String orderIndex) throws IndexOutOfBoundsException {
+        // Make sure we have that index
+        Tree23 index = (Tree23) searchIndexes.get(orderIndex);
+        // Get rid of everything in the DLL
+        clear();
+        // All of the objects should have had this index so repopulate the DLL in that indexes order
+        for (int i = 0; i < index.size(); ++i) {
+            super.add((Object[][]) index.value(i));
+        }
+        return this;
+    }
 }
