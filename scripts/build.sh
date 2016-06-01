@@ -2,10 +2,10 @@
 set -x
 set -e
 
-ARTIFACT_DIR='out/artifacts/'
+ARTIFACT_DIR='out/artifacts'
 
 # Names of the jars we are building
-NAME=('Web' 'Database' 'Tests')
+NAME=('cli')
 
 # Download required libs (for testing)
 scripts/libs.sh
@@ -14,7 +14,7 @@ scripts/libs.sh
 ant -f webserver.xml
 
 i=0
-length=${#NAME}
+length=1
 # Add the fucking manifest (thanks intellij)
 until [ $i -ge $length ]; do
     MANIFEST="src/${NAME[i]}/META-INF/MANIFEST.MF"

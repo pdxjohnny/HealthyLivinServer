@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="cli">
+    <output-path>$PROJECT_DIR$/out/artifacts/cli</output-path>
+    <root id="archive" name="cli.jar">
+      <element id="module-output" name="Webserver" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/cli/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

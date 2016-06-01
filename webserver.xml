@@ -76,58 +76,25 @@
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.database" value="${basedir}/out/artifacts/Database"/>
-    <property name="artifact.output.tests" value="${basedir}/out/artifacts/Tests"/>
-    <property name="artifact.output.web" value="${basedir}/out/artifacts/Web"/>
+    <property name="artifact.output.cli" value="${basedir}/out/artifacts/cli"/>
     <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.Database.jar" value="${artifacts.temp.dir}/Database.jar"/>
-    <property name="temp.jar.path.Tests.jar" value="${artifacts.temp.dir}/Tests.jar"/>
-    <property name="temp.jar.path.Web.jar" value="${artifacts.temp.dir}/Web.jar"/>
+    <property name="temp.jar.path.cli.jar" value="${artifacts.temp.dir}/cli.jar"/>
   </target>
   
-  <target name="artifact.database" depends="init.artifacts, compile.module.webserver" description="Build &#39;Database&#39; artifact">
-    <property name="artifact.temp.output.database" value="${artifacts.temp.dir}/Database"/>
-    <mkdir dir="${artifact.temp.output.database}"/>
-    <jar destfile="${temp.jar.path.Database.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+  <target name="artifact.cli" depends="init.artifacts, compile.module.webserver" description="Build &#39;cli&#39; artifact">
+    <property name="artifact.temp.output.cli" value="${artifacts.temp.dir}/cli"/>
+    <mkdir dir="${artifact.temp.output.cli}"/>
+    <jar destfile="${temp.jar.path.cli.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${webserver.output.dir}"/>
-      <zipfileset file="${basedir}/src/Database/META-INF/MANIFEST.MF" prefix="META-INF"/>
+      <zipfileset file="${basedir}/src/cli/META-INF/MANIFEST.MF" prefix="META-INF"/>
     </jar>
-    <copy file="${temp.jar.path.Database.jar}" tofile="${artifact.temp.output.database}/Database.jar"/>
+    <copy file="${temp.jar.path.cli.jar}" tofile="${artifact.temp.output.cli}/cli.jar"/>
   </target>
   
-  <target name="artifact.tests" depends="init.artifacts, compile.module.webserver" description="Build &#39;Tests&#39; artifact">
-    <property name="artifact.temp.output.tests" value="${artifacts.temp.dir}/Tests"/>
-    <mkdir dir="${artifact.temp.output.tests}"/>
-    <jar destfile="${temp.jar.path.Tests.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <zipfileset file="${basedir}/lib/junit-4.12.jar"/>
-      <zipfileset dir="${webserver.output.dir}"/>
-      <zipfileset file="${basedir}/src/Tests/META-INF/MANIFEST.MF" prefix="META-INF"/>
-    </jar>
-    <copy file="${temp.jar.path.Tests.jar}" tofile="${artifact.temp.output.tests}/Tests.jar"/>
-  </target>
-  
-  <target name="artifact.web" depends="init.artifacts, compile.module.webserver" description="Build &#39;Web&#39; artifact">
-    <property name="artifact.temp.output.web" value="${artifacts.temp.dir}/Web"/>
-    <mkdir dir="${artifact.temp.output.web}"/>
-    <jar destfile="${temp.jar.path.Web.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <zipfileset dir="${webserver.output.dir}"/>
-      <zipfileset file="${basedir}/src/Web/META-INF/MANIFEST.MF" prefix="META-INF"/>
-    </jar>
-    <copy file="${temp.jar.path.Web.jar}" tofile="${artifact.temp.output.web}/Web.jar"/>
-  </target>
-  
-  <target name="build.all.artifacts" depends="artifact.database, artifact.tests, artifact.web" description="Build all artifacts">
-    <mkdir dir="${artifact.output.database}"/>
-    <copy todir="${artifact.output.database}">
-      <fileset dir="${artifact.temp.output.database}"/>
-    </copy>
-    <mkdir dir="${artifact.output.tests}"/>
-    <copy todir="${artifact.output.tests}">
-      <fileset dir="${artifact.temp.output.tests}"/>
-    </copy>
-    <mkdir dir="${artifact.output.web}"/>
-    <copy todir="${artifact.output.web}">
-      <fileset dir="${artifact.temp.output.web}"/>
+  <target name="build.all.artifacts" depends="artifact.cli" description="Build all artifacts">
+    <mkdir dir="${artifact.output.cli}"/>
+    <copy todir="${artifact.output.cli}">
+      <fileset dir="${artifact.temp.output.cli}"/>
     </copy>
     
     <!-- Delete temporary files -->
