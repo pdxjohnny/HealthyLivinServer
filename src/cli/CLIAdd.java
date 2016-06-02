@@ -1,4 +1,4 @@
-package CLI;
+package cli;
 
 /**
  * Created by John Andersen on 5/29/16.
