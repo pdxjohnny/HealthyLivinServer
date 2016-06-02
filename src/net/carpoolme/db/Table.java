@@ -116,10 +116,6 @@ public class Table extends DLL<Object[][]> {
     }
 
     public synchronized boolean add(final Object[][] addData) throws IndexOutOfBoundsException {
-        return add(parser.getKey(addData, primaryKey).toString(), addData);
-    }
-
-    public synchronized boolean add(final String storageKey, final Object[][] addData) throws IndexOutOfBoundsException {
         // Only insert if it does not exist
         try {
             if (!duplicatesAllowed) {

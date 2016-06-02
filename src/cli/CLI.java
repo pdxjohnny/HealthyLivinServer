@@ -5,6 +5,7 @@ package cli;
  */
 
 import net.carpoolme.db.Database;
+import net.carpoolme.utils.Logging;
 
 public class CLI extends CLICommand {
     CLI(String[] mArgv) {
@@ -17,6 +18,7 @@ public class CLI extends CLICommand {
     }
 
     public static void main(String[] argv) {
+        Logging.start();
         CLI cli = new CLI(argv);
         cli.run();
     }

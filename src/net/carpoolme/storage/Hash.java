@@ -1,7 +1,5 @@
 package net.carpoolme.storage;
 
-import net.carpoolme.utils.JSONParser;
-
 import java.io.IOException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -12,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Hash {
     public static String sha256(Object[][] object) throws NoSuchAlgorithmException {
-        System.out.println(new JSONParser().toString(object));
         DigestInputStream in = new DigestInputStream(Serializer.toInputStream(object), MessageDigest.getInstance("SHA-256"));
         try {
             while (in.read() != -1) {
