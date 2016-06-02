@@ -5,6 +5,7 @@ import net.carpoolme.datastructures.Tree23;
 import net.carpoolme.storage.Hash;
 import net.carpoolme.storage.Serializer;
 import net.carpoolme.storage.Storage;
+import net.carpoolme.storage.XML;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.JSONParser;
 
@@ -25,6 +26,8 @@ public class Table extends DLL<Object[][]> {
     private DLL<String> maintainIndexes = new DLL<String>();
 
     private boolean duplicatesAllowed = true;
+
+    private Serializer serializer = new XML();
 
     // For parsing records
     private BasicParser parser = new BasicParser();
@@ -63,7 +66,7 @@ public class Table extends DLL<Object[][]> {
         mStorage.disableWrite();
         InputStream[] records = mStorage.allRecords();
         for (int i = 0; i < records.length; ++i) {
-            add((Object[][]) Serializer.toObject(records[i]));
+            add((Object[][]) serializer.toObject(records[i]));
         }
         mStorage.enableWrite();
     }
@@ -127,7 +130,7 @@ public class Table extends DLL<Object[][]> {
             System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
             String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
             try {
-                return addIndexesToData(allIndexes, addData) && super.add(addData) && storage.writeRecord(Paths.get(Hash.sha256(addData)), Serializer.toInputStream(addData));
+                return addIndexesToData(allIndexes, addData) && super.add(addData) && storage.writeRecord(Paths.get(Hash.sha256(serializer, addData)), serializer.toInputStream(addData));
             } catch (NoSuchAlgorithmException e) {
                 System.out.println("ERROR: Hashing could not be completed");
                 e.printStackTrace();

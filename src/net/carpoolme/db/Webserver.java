@@ -7,7 +7,7 @@ package net.carpoolme.db;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import net.carpoolme.storage.Serializer;
+import net.carpoolme.storage.XML;
 import net.carpoolme.utils.JSONParser;
 import net.carpoolme.utils.Parser;
 import net.carpoolme.web.JWTProtectedWebserver;
@@ -46,7 +46,7 @@ public class Webserver extends JWTProtectedWebserver {
 //            }
             int status = 500;
             String response = "Something went wrong";
-            Object[][] request = (Object[][]) Serializer.toObject(t.getRequestBody());
+            Object[][] request = (Object[][]) new XML().toObject(t.getRequestBody());
             if (request == null) {
                 response = "Could not create user, bad user info";
                 status = 400;

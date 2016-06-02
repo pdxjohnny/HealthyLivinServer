@@ -9,8 +9,8 @@ import java.security.NoSuchAlgorithmException;
  * Created by John Andersen on 6/1/16.
  */
 public class Hash {
-    public static String sha256(Object[][] object) throws NoSuchAlgorithmException {
-        DigestInputStream in = new DigestInputStream(Serializer.toInputStream(object), MessageDigest.getInstance("SHA-256"));
+    public static String sha256(Serializer serializer, Object[][] object) throws NoSuchAlgorithmException {
+        DigestInputStream in = new DigestInputStream(serializer.toInputStream(object), MessageDigest.getInstance("SHA-256"));
         try {
             while (in.read() != -1) {
                 // Put it all though the hash function
