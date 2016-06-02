@@ -20,7 +20,7 @@ public class CLIAddFood extends CLICommand {
 
     @Override
     public void run() {
-        System.out.printf("Please input a food in the form of name, category: ");
+        System.out.printf("Please input a food in the form of name, category, sodium, sugar, fat (in grams): ");
         Food food = new Food(database);
         food.fromStream(System.in);
         System.out.println("Here's the food you input");

@@ -19,7 +19,7 @@ public class Food extends net.carpoolme.healthylivin.Food {
 
     public void toStream(OutputStream out) {
         try {
-            out.write(String.format("Name: %s\nCategory: %s\n", name, category).getBytes());
+            out.write(String.format("Name: %s%nCategory: %s%n(Grams)%nSodium: %d%nSugar: %d%nFat: %d%n", name, category, sodium, sugar, fat).getBytes());
         } catch (IOException ignored) {}
     }
 
@@ -33,6 +33,18 @@ public class Food extends net.carpoolme.healthylivin.Food {
             return false;
         }
         category = scanner.next().trim();
+        if (!scanner.hasNext()) {
+            return false;
+        }
+        sodium = Integer.parseInt(scanner.next().trim());
+        if (!scanner.hasNext()) {
+            return false;
+        }
+        sugar = Integer.parseInt(scanner.next().trim());
+        if (!scanner.hasNext()) {
+            return false;
+        }
+        fat = Integer.parseInt(scanner.next().trim());
         return true;
     }
 
