@@ -42,9 +42,9 @@ public abstract class Food extends BasicData {
         System.out.println("DEBUG: Food parsing " + new JSONParser().toString(data));
         name = (String) parser.getKey(data, "name", DEFAULT_NAME);
         category = (String) parser.getKey(data, "category", DEFAULT_CATEGORY);
-        sodium = (int) parser.getKey(data, "sodium", DEFAULT_CATEGORY);
-        sugar = (int) parser.getKey(data, "sugar", DEFAULT_CATEGORY);
-        fat = (int) parser.getKey(data, "fat", DEFAULT_CATEGORY);
+        sodium = (int) parser.getKey(data, "sodium", DEFAULT_NUTRITION);
+        sugar = (int) parser.getKey(data, "sugar", DEFAULT_NUTRITION);
+        fat = (int) parser.getKey(data, "fat", DEFAULT_NUTRITION);
         return true;
     }
 

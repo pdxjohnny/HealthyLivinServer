@@ -11,7 +11,7 @@ public class CLIList extends CLICommand {
         super("list", mDatabase, mArgv, mPreviousCommands);
         subCommands = new Object[][]{
                 new Object[]{"food", new CLIListFood(database, downArgLevel(), commandsSoFar())},
-//                new Object[]{"store", new CLIListStore(database, downArgLevel(), commandsSoFar())},
+                new Object[]{"store", new CLIListStore(database, downArgLevel(), commandsSoFar())},
 //                new Object[]{"restaurant", new CLIListRestaurant(database, downArgLevel(), commandsSoFar())},
         };
     }

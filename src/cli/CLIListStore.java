@@ -6,20 +6,19 @@ package cli;
 
 import net.carpoolme.db.Database;
 import net.carpoolme.healthylivin.BasicData;
-import net.carpoolme.healthylivin.cli.Food;
+import net.carpoolme.healthylivin.cli.Store;
 
 /*
 For each type of food that the consumer wants to
 purchase, what is the most healthiest of that category ordered by a
 respective health index (the quantity of sodium, sugar, fat, etc.).
  */
-public class CLIListFood extends CLICommand {
-    public CLIListFood(Database mDatabase, String[] mArgv, String mPreviousCommands) {
-        super("food", mDatabase, mArgv, mPreviousCommands);
+public class CLIListStore extends CLICommand {
+    public CLIListStore(Database mDatabase, String[] mArgv, String mPreviousCommands) {
+        super("store", mDatabase, mArgv, mPreviousCommands);
         argumentParser
-                .add("-count", "Display a count of how many foods were matched")
-                .add("--order", "What to order by, name, category, sodium, sugar, fat")
-                .add("--category", "Category to match");
+                .add("-count", "Display a count of how many stores were matched")
+                .add("--order", "What to order by, name, health");
     }
 
     @Override
@@ -27,11 +26,7 @@ public class CLIListFood extends CLICommand {
         if (argumentParser.help(System.out)) {
             return;
         }
-        BasicData data = new Food(database);
-        String category = argumentParser.getString("category");
-        if (category.length() > 0) {
-            data = data.select("category", category);
-        }
+        BasicData data = new Store(database);
         String orderBy = argumentParser.getString("order");
         if (orderBy.length() < 1) {
             orderBy = "name";

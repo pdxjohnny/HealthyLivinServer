@@ -11,7 +11,7 @@ public class CLIAdd extends CLICommand {
         super("add", mDatabase, mArgv, mPreviousCommands);
         subCommands = new Object[][]{
                 new Object[]{"food", new CLIAddFood(database, downArgLevel(), commandsSoFar())},
-//                new Object[]{"store", new CLIAddStore(database, downArgLevel(), commandsSoFar())},
+                new Object[]{"store", new CLIAddStore(database, downArgLevel(), commandsSoFar())},
 //                new Object[]{"restaurant", new CLIAddRestaurant(database, downArgLevel(), commandsSoFar())},
         };
     }
