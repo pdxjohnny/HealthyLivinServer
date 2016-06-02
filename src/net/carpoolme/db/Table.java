@@ -2,6 +2,7 @@ package net.carpoolme.db;
 
 import net.carpoolme.datastructures.DLL;
 import net.carpoolme.datastructures.Tree23;
+import net.carpoolme.storage.Hash;
 import net.carpoolme.storage.Serializer;
 import net.carpoolme.storage.Storage;
 import net.carpoolme.utils.BasicParser;
@@ -10,6 +11,7 @@ import net.carpoolme.utils.JSONParser;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by John Andersen on 5/26/16.
@@ -128,7 +130,13 @@ public class Table extends DLL<Object[][]> {
         } catch (IndexOutOfBoundsException ignored) {
             System.out.println("DEBUG: Inserting " + new JSONParser().toString(addData));
             String[] allIndexes = maintainIndexes.toArray(new String[maintainIndexes.size()]);
-            return addIndexesToData(allIndexes, addData) && super.add(addData) && storage.writeRecord(Paths.get(storageKey), Serializer.toInputStream(addData));
+            try {
+                return addIndexesToData(allIndexes, addData) && super.add(addData) && storage.writeRecord(Paths.get(Hash.sha256(addData)), Serializer.toInputStream(addData));
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("ERROR: Hashing could not be completed");
+                e.printStackTrace();
+                return false;
+            }
         }
         return false;
     }
