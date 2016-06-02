@@ -17,6 +17,7 @@ public class CLIListFood extends CLICommand {
     public CLIListFood(Database mDatabase, String[] mArgv, String mPreviousCommands) {
         super("food", mDatabase, mArgv, mPreviousCommands);
         argumentParser
+                .add("-count", "Display a count of how many foods were match")
                 .add("--order", "What to order by, name, category, sodium, sugar, fat")
                 .add("--category", "Category to match");
     }
@@ -36,5 +37,8 @@ public class CLIListFood extends CLICommand {
             orderBy = "name";
         }
         data.orderBy(System.out, orderBy);
+        if (argumentParser.getBoolean("count")) {
+            System.out.print(String.format("Number matching query : %d%n", data.size()));
+        }
     }
 }

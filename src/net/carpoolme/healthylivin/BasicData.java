@@ -53,4 +53,8 @@ public abstract class BasicData implements Parseable {
         }
         return this;
     }
+
+    public int size() {
+        return table != null ? table.size() : 0;
+    }
 }
