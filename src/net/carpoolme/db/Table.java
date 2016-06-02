@@ -2,10 +2,7 @@ package net.carpoolme.db;
 
 import net.carpoolme.datastructures.DLL;
 import net.carpoolme.datastructures.Tree23;
-import net.carpoolme.storage.Hash;
-import net.carpoolme.storage.Serializer;
-import net.carpoolme.storage.Storage;
-import net.carpoolme.storage.XML;
+import net.carpoolme.storage.*;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.JSONParser;
 
@@ -39,10 +36,11 @@ public class Table extends DLL<Object[][]> {
     }
 
     public Table(final Table table, final Tree23 tree23) {
-        this(table.storage, table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
+        this(new MockStorage(), table.primaryKey, table.maintainIndexes.toArray(new String[table.maintainIndexes.size()]));
         for (int i = 0; i < tree23.size(); ++i) {
             add((Object[][]) tree23.value(i));
         }
+        storage = table.storage;
     }
 
     public Table(final Storage mStorage, final String mPrimaryKey, final String[] indexes) {

@@ -1,6 +1,7 @@
 package cli;
 
 import net.carpoolme.db.Database;
+import net.carpoolme.utils.ArgumentParser;
 
 import java.util.Arrays;
 
@@ -11,14 +12,17 @@ public class CLICommand {
     protected Database database;
     protected String[] argv;
     protected String previousCommands;
+    protected ArgumentParser argumentParser;
 
-    protected String COMMAND_NAME = "COMMAND";
+    protected String commandName = "COMMAND";
     protected Object[][] subCommands = null;
 
-    CLICommand(Database mDatabase, String[] mArgv, String mPreviousCommands) {
+    public CLICommand(final String mCommandName, Database mDatabase, String[] mArgv, String mPreviousCommands) {
+        commandName = mCommandName;
         database = mDatabase;
         argv = mArgv;
         previousCommands = mPreviousCommands;
+        argumentParser = new ArgumentParser(commandName, argv).parseArgs();
     }
 
     public void run() {
@@ -46,7 +50,7 @@ public class CLICommand {
     }
 
     protected String commandsSoFar() {
-        return String.format("%s %s", previousCommands, COMMAND_NAME);
+        return String.format("%s %s", previousCommands, commandName);
     }
 
     private void displayUsage() {

@@ -8,12 +8,10 @@ import net.carpoolme.utils.JSONParser;
 /**
  * Created by John Andersen on 5/29/16.
  */
-public class Food {
+public abstract class Food extends BasicData {
     public static final String DEFAULT_NAME = "Unknown food";
     public static final String DEFAULT_CATEGORY = "No category for this food";
     public static final int DEFAULT_NUTRITION = 0;
-
-    protected Database database;
 
     // All protected so derived classes can change to what they need
     protected BasicParser parser = new BasicParser();
@@ -24,9 +22,10 @@ public class Food {
     protected int sugar = DEFAULT_NUTRITION;
     protected int fat = DEFAULT_NUTRITION;
 
-    public Food(Database mDatabase) {
-        database = mDatabase;
+    public Food(final Database mDatabase, final Table mTable) {
+        super(mDatabase, mTable);
         database.createTable(getClass().getSimpleName(), "name", new String[]{"name", "category", "sodium", "sugar", "fat"});
+        load();
     }
 
     public Object[][] Marshal() {
@@ -50,7 +49,10 @@ public class Food {
     }
 
     public Table load() {
-        return (Table) database.get(getClass().getSimpleName());
+        if (table == null) {
+            table = (Table) database.get(getClass().getSimpleName());
+        }
+        return table;
     }
 
     public boolean save() {

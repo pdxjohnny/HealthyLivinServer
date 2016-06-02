@@ -8,9 +8,8 @@ import net.carpoolme.db.Database;
 import net.carpoolme.utils.Logging;
 
 public class CLI extends CLICommand {
-    CLI(String[] mArgv) {
-        super(new Database(), mArgv, "java -jar");
-        COMMAND_NAME = "cli.jar";
+    public CLI(String[] mArgv) {
+        super("cli.jar", new Database(), mArgv, "java -jar");
         subCommands = new Object[][]{
                 new Object[]{"add", new CLIAdd(database, downArgLevel(), commandsSoFar())},
                 new Object[]{"list", new CLIList(database, downArgLevel(), commandsSoFar())}

@@ -13,9 +13,8 @@ purchase, what is the most healthiest of that category ordered by a
 respective health index (the quantity of sodium, sugar, fat, etc.).
  */
 public class CLIAddFood extends CLICommand {
-    CLIAddFood(Database mDatabase, String[] mArgv, String mPreviousCommands) {
-        super(mDatabase, mArgv, mPreviousCommands);
-        COMMAND_NAME = "food";
+    public CLIAddFood(Database mDatabase, String[] mArgv, String mPreviousCommands) {
+        super("food", mDatabase, mArgv, mPreviousCommands);
     }
 
     @Override

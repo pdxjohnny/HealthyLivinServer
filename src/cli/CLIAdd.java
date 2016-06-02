@@ -7,9 +7,8 @@ package cli;
 import net.carpoolme.db.Database;
 
 public class CLIAdd extends CLICommand {
-    CLIAdd(Database mDatabase, String[] mArgv, String mPreviousCommands) {
-        super(mDatabase, mArgv, mPreviousCommands);
-        COMMAND_NAME = "add";
+    public CLIAdd(Database mDatabase, String[] mArgv, String mPreviousCommands) {
+        super("add", mDatabase, mArgv, mPreviousCommands);
         subCommands = new Object[][]{
                 new Object[]{"food", new CLIAddFood(database, downArgLevel(), commandsSoFar())},
 //                new Object[]{"store", new CLIAddStore(database, downArgLevel(), commandsSoFar())},

@@ -2,6 +2,7 @@ package net.carpoolme.healthylivin.cli;
 
 import net.carpoolme.db.Database;
 import net.carpoolme.db.Table;
+import net.carpoolme.healthylivin.BasicData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +15,15 @@ import java.util.Scanner;
 public class Food extends net.carpoolme.healthylivin.Food {
 
     public Food(Database mDatabase) {
-        super(mDatabase);
+        super(mDatabase, null);
+    }
+
+    public Food(final Database mDatabase, final Table mTable) {
+        super(mDatabase, mTable);
+    }
+
+    public BasicData createSelf() {
+        return new Food(database, table);
     }
 
     public void toStream(OutputStream out) {
@@ -46,23 +55,5 @@ public class Food extends net.carpoolme.healthylivin.Food {
         }
         fat = Integer.parseInt(scanner.next().trim());
         return true;
-    }
-
-    public void orderBy(OutputStream out, final String toOrderBy) {
-        Table all;
-        try {
-            all = load().orderBy(toOrderBy);
-        } catch (IndexOutOfBoundsException e) {
-            try {
-                out.write(String.format("%s%n", e.getMessage()).getBytes());
-            } catch (IOException ignored) {}
-            return;
-        }
-        for (int i = 0; i < all.size(); i++) {
-            Food food = new Food(database);
-            if (food.Unmarshal(all.get(i))) {
-                food.toStream(out);
-            }
-        }
     }
 }
