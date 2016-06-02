@@ -44,9 +44,12 @@ public abstract class BasicData implements Parseable {
                 BasicData object = createSelf();
                 if (object.Unmarshal(table.get(i))) {
                     object.toStream(out);
+                    if (i < table.size() - 1) {
+                        out.write('\n');
+                    }
                 }
             }
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IOException | IndexOutOfBoundsException e) {
             try {
                 out.write(String.format("ERROR: %s%n", e.getMessage()).getBytes());
             } catch (IOException ignored) {}
