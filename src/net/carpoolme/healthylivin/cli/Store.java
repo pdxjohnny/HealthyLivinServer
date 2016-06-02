@@ -28,7 +28,7 @@ public class Store extends net.carpoolme.healthylivin.Store {
 
     public void toStream(OutputStream out) {
         try {
-            out.write(String.format("Name: %s%nHealth Index: %s%n", name, health).getBytes());
+            out.write(String.format("Name: %s%nCategory: %s%nHealth Index: %s%n", name, category, health).getBytes());
         } catch (IOException ignored) {}
     }
 
@@ -38,6 +38,10 @@ public class Store extends net.carpoolme.healthylivin.Store {
             return false;
         }
         name = scanner.next().trim();
+        if (!scanner.hasNext()) {
+            return false;
+        }
+        category = scanner.next().trim();
         if (!scanner.hasNext()) {
             return false;
         }

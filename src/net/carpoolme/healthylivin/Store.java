@@ -10,23 +10,26 @@ import net.carpoolme.utils.JSONParser;
  */
 public abstract class Store extends BasicData {
     public static final String DEFAULT_NAME = "Unknown store";
+    public static final String DEFAULT_CATEGORY = "Unknown category";
     public static final int DEFAULT_HEALTH = 0;
 
     // All protected so derived classes can change to what they need
     protected BasicParser parser = new BasicParser();
 
     protected String name = DEFAULT_NAME;
+    protected String category = DEFAULT_CATEGORY;
     protected int health = DEFAULT_HEALTH;
 
     public Store(final Database mDatabase, final Table mTable) {
         super(mDatabase, mTable);
-        database.createTable(getClass().getSimpleName(), "name", new String[]{"name", "health"});
+        database.createTable(getClass().getSimpleName(), "name", new String[]{"name", "category", "health"});
         load();
     }
 
     public Object[][] Marshal() {
         return new Object[][] {
                 new Object[] {"name", name},
+                new Object[] {"category", category},
                 new Object[] {"health", health}
         };
     }
@@ -34,6 +37,7 @@ public abstract class Store extends BasicData {
     public boolean Unmarshal(Object[][] data) {
         System.out.println("DEBUG: Store parsing " + new JSONParser().toString(data));
         name = (String) parser.getKey(data, "name", DEFAULT_NAME);
+        category = (String) parser.getKey(data, "category", DEFAULT_CATEGORY);
         health = (int) parser.getKey(data, "health", DEFAULT_HEALTH);
         return true;
     }

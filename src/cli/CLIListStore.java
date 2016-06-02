@@ -18,7 +18,8 @@ public class CLIListStore extends CLICommand {
         super("store", mDatabase, mArgv, mPreviousCommands);
         argumentParser
                 .add("-count", "Display a count of how many stores were matched")
-                .add("--order", "What to order by, name, health");
+                .add("--order", "What to order by, name, health")
+                .add("--category", "Category to match, grocery, restaurant");
     }
 
     @Override
@@ -27,6 +28,10 @@ public class CLIListStore extends CLICommand {
             return;
         }
         BasicData data = new Store(database);
+        String category = argumentParser.getString("category");
+        if (category.length() > 0) {
+            data = data.select("category", category);
+        }
         String orderBy = argumentParser.getString("order");
         if (orderBy.length() < 1) {
             orderBy = "name";

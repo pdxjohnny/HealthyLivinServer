@@ -19,8 +19,9 @@ public class CLIAddStore extends CLICommand {
 
     @Override
     public void run() {
-        System.out.printf("FYI, health index is the amount of healthy items that can be found at a store");
-        System.out.printf("Please input a store in the form of name, health index: ");
+        System.out.printf("FYI, health index is the amount of healthy items that can be found at a store%n");
+        System.out.printf("category is the type of store, grocery, restaurant, etc.%n");
+        System.out.printf("Please input a store in the form of name, category, health index: ");
         Store data = new Store(database);
         data.fromStream(System.in);
         System.out.println("Here's the store you input");
