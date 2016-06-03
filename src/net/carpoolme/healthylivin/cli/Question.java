@@ -76,7 +76,8 @@ public class Question extends net.carpoolme.healthylivin.Question {
             parser.setKey(points, "gym", (int) parser.getKey(points, "gym", 0) + gym);
             parser.setKey(points, "hiking", (int) parser.getKey(points, "hiking", 0) + hiking);
             parser.setKey(points, "yes", (int) parser.getKey(points, "yes", 0) + 1);
+            return stop;
         }
-        return stop;
+        return false;
     }
 }

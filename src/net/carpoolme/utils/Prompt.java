@@ -28,17 +28,19 @@ public class Prompt extends PrintStream {
         }
         byte[] check = new byte[1];
         try {
-            return in.read(check) == 1 &&
-                    Character.toUpperCase(check[0]) == 'Y' &&
-                    flushInput();
+            boolean result = in.read(check) == 1 &&
+                    Character.toUpperCase(check[0]) == 'Y';
+            flushInput();
+            return result;
         } catch (IOException ignored) {}
         return false;
     }
 
     private boolean flushInput() {
         try {
+            byte[] array = new byte[1024];
             while (in.available() > 0) {
-                in.skip(in.available());
+                in.read(array);
             }
         } catch (IOException ignored) {}
         return true;

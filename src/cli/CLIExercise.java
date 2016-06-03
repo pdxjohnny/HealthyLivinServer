@@ -22,6 +22,9 @@ public class CLIExercise extends CLICommand {
 
     @Override
     public void run() {
+        if (argumentParser.help(System.out)) {
+            return;
+        }
         Prompt prompt = new Prompt(System.in, System.out);
         System.out.printf("You will be asked a number of questions on your" +
                 " physical ability. Answer these as bew you can to get a list of activities" +
@@ -63,9 +66,19 @@ public class CLIExercise extends CLICommand {
             }
             // Ask the question and if it is that last question or it is a question
             // that is marked as wanting to end on it then we stop asking questions
-            if (!question.ask(prompt, points) || (int) parser.getKey(points, "yes", 0) >= questionsToAsk) {
+            if (question.ask(prompt, points) || (int) parser.getKey(points, "yes", 0) >= questionsToAsk) {
                 break;
             }
+        }
+        // Find all the activities which have point values less than or equal to the
+        // values the user has. Points are a measure of how active you are in a
+        // category so activities with points less than the number we have should be
+        // easy for the user
+        String currentCategory;
+        Table currentApplicable;
+        for (int i = 0; i < points.length - 1; ++i) {
+            currentCategory = (String) points[i][0];
+//            currentApplicable = activities.selectLessOrEqual(currentCategory, (int) points[i][1]);
         }
     }
 
@@ -78,9 +91,5 @@ public class CLIExercise extends CLICommand {
                 new Object[] {"hiking", 0},
                 new Object[] {"yes", 0}
         };
-    }
-
-    private String highestPointCategory() {
-        return "walking";
     }
 }
