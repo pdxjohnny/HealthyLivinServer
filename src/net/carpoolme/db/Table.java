@@ -171,7 +171,7 @@ public class Table extends DLL<Object[][]> {
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.printf("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex);
+            System.out.print(String.format("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex));
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData, Tree23.GET_EQUAL);
         }
@@ -185,7 +185,7 @@ public class Table extends DLL<Object[][]> {
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.printf("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex);
+            System.out.print(String.format("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex));
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData, Tree23.GET_LESS_THAN_OR_EQUAL);
         }
@@ -199,7 +199,7 @@ public class Table extends DLL<Object[][]> {
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.printf("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex);
+            System.out.print(String.format("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex));
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData, Tree23.GET_EQUAL).get(0);
         }

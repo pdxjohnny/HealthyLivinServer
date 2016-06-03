@@ -10,6 +10,8 @@ import net.carpoolme.healthylivin.cli.Activity;
 import net.carpoolme.healthylivin.cli.Question;
 import net.carpoolme.storage.MockStorage;
 import net.carpoolme.utils.BasicParser;
+import net.carpoolme.utils.JSONParser;
+import net.carpoolme.utils.Logging;
 import net.carpoolme.utils.Prompt;
 
 public class CLIExercise extends CLICommand {
@@ -88,6 +90,7 @@ public class CLIExercise extends CLICommand {
                 continue;
             }
             for (int j = 0; j < currentApplicable.size(); ++j) {
+                System.out.print(String.format(Logging.INFO + ": Adding %s to list of activities %n", new JSONParser().toString(currentApplicable.get(j))));
                 allApplicable.add(currentApplicable.get(j));
             }
         }
