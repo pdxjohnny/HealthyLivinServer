@@ -14,7 +14,7 @@ Deployment
 ---
 
 Deploy server to private registry, watchtower restarts image when new image is
-recieved
+received
 
 ```
 docker login registry.carpoolme.net
@@ -32,3 +32,11 @@ java -jar out/artifacts/cli/cli.jar list food --order fat --category ante -count
 java -jar out/artifacts/cli/cli.jar add food
 java -jar out/artifacts/cli/cli.jar add store
 ```
+
+Exercise
+---
+
+The idea is that there are several categories and you can add yes or no
+questions which add points to each category. After 5 questions with yes answers
+the program decides what would be a good activity for you. Activities can also
+be added and will be chosen to match point values for each category.

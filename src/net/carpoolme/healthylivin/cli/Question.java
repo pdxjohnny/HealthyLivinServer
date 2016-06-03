@@ -13,23 +13,23 @@ import java.util.Scanner;
 /**
  * Created by John Andersen on 5/29/16.
  */
-public class Food extends net.carpoolme.healthylivin.Food {
+public class Question extends net.carpoolme.healthylivin.Question {
 
-    public Food(Database mDatabase) {
+    public Question(Database mDatabase) {
         super(mDatabase, null);
     }
 
-    public Food(final Database mDatabase, final Table mTable) {
+    public Question(final Database mDatabase, final Table mTable) {
         super(mDatabase, mTable);
     }
 
     public BasicData createSelf() {
-        return new Food(database, table);
+        return new Question(database, table);
     }
 
     public void toStream(OutputStream out) {
         try {
-            out.write(String.format("Name: %s%nCategory: %s%n(Grams)%nSodium: %d%nSugar: %d%nFat: %d%n", name, category, sodium, sugar, fat).getBytes());
+            out.write(String.format("question: %s%nwalking: %d%nrunning: %d%ncycling: %d%ngym: %d%nhiking: %d%nstop: %b%n", question, walking, running, cycling, gym, hiking, stop).getBytes());
         } catch (IOException ignored) {}
     }
 
@@ -38,23 +38,31 @@ public class Food extends net.carpoolme.healthylivin.Food {
         if (!scanner.hasNext()) {
             return false;
         }
-        name = scanner.next().trim();
+        question = scanner.next().trim();
         if (!scanner.hasNext()) {
             return false;
         }
-        category = scanner.next().trim();
+        walking = Strings.toInt(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        sodium = Strings.toInt(scanner.next().trim());
+        running = Strings.toInt(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        sugar = Strings.toInt(scanner.next().trim());
+        cycling = Strings.toInt(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        fat = Strings.toInt(scanner.next().trim());
+        gym = Strings.toInt(scanner.next().trim());
+        if (!scanner.hasNext()) {
+            return false;
+        }
+        hiking = Strings.toInt(scanner.next().trim());
+        if (!scanner.hasNext()) {
+            return false;
+        }
+        stop = Strings.toBoolean(scanner.next().trim());
         return true;
     }
 }

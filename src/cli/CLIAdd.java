@@ -12,7 +12,7 @@ public class CLIAdd extends CLICommand {
         subCommands = new Object[][]{
                 new Object[]{"food", new CLIAddFood(database, downArgLevel(), commandsSoFar())},
                 new Object[]{"store", new CLIAddStore(database, downArgLevel(), commandsSoFar())},
-//                new Object[]{"restaurant", new CLIAddRestaurant(database, downArgLevel(), commandsSoFar())},
+                new Object[]{"question", new CLIAddQuestion(database, downArgLevel(), commandsSoFar())},
         };
     }
 }

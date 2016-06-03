@@ -3,6 +3,7 @@ package net.carpoolme.healthylivin.cli;
 import net.carpoolme.db.Database;
 import net.carpoolme.db.Table;
 import net.carpoolme.healthylivin.BasicData;
+import net.carpoolme.utils.Strings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class Store extends net.carpoolme.healthylivin.Store {
         if (!scanner.hasNext()) {
             return false;
         }
-        health = Integer.parseInt(scanner.next().trim());
+        health = Strings.toInt(scanner.next().trim());
         return true;
     }
 }
