@@ -3,7 +3,6 @@ package net.carpoolme.healthylivin.cli;
 import net.carpoolme.db.Database;
 import net.carpoolme.db.Table;
 import net.carpoolme.healthylivin.BasicData;
-import net.carpoolme.utils.Prompt;
 import net.carpoolme.utils.Strings;
 
 import java.io.IOException;
@@ -14,23 +13,23 @@ import java.util.Scanner;
 /**
  * Created by John Andersen on 5/29/16.
  */
-public class Question extends net.carpoolme.healthylivin.Question {
+public class Activity extends net.carpoolme.healthylivin.Activity {
 
-    public Question(Database mDatabase) {
+    public Activity(Database mDatabase) {
         super(mDatabase, null);
     }
 
-    public Question(final Database mDatabase, final Table mTable) {
+    public Activity(final Database mDatabase, final Table mTable) {
         super(mDatabase, mTable);
     }
 
     public BasicData createSelf() {
-        return new Question(database, table);
+        return new Activity(database, table);
     }
 
     public void toStream(OutputStream out) {
         try {
-            out.write(String.format("question: %s%nwalking: %d%nrunning: %d%ncycling: %d%ngym: %d%nhiking: %d%nstop: %b%n", question, walking, running, cycling, gym, hiking, stop).getBytes());
+            out.write(String.format("activity: %s%nwalking: %d%nrunning: %d%ncycling: %d%ngym: %d%nhiking: %d%n", activity, walking, running, cycling, gym, hiking).getBytes());
         } catch (IOException ignored) {}
     }
 
@@ -39,7 +38,7 @@ public class Question extends net.carpoolme.healthylivin.Question {
         if (!scanner.hasNext()) {
             return false;
         }
-        question = scanner.next().trim();
+        activity = scanner.next().trim();
         if (!scanner.hasNext()) {
             return false;
         }
@@ -60,23 +59,6 @@ public class Question extends net.carpoolme.healthylivin.Question {
             return false;
         }
         hiking = Strings.toInt(scanner.next().trim());
-        if (!scanner.hasNext()) {
-            return false;
-        }
-        stop = Strings.toBoolean(scanner.next().trim());
         return true;
-    }
-
-    public boolean ask(Prompt prompt, Object[][] points) {
-        prompt.printf("%s ", question);
-        if (prompt.confirm()) {
-            parser.setKey(points, "walking", (int) parser.getKey(points, "walking", 0) + walking);
-            parser.setKey(points, "running", (int) parser.getKey(points, "running", 0) + running);
-            parser.setKey(points, "cycling", (int) parser.getKey(points, "cycling", 0) + cycling);
-            parser.setKey(points, "gym", (int) parser.getKey(points, "gym", 0) + gym);
-            parser.setKey(points, "hiking", (int) parser.getKey(points, "hiking", 0) + hiking);
-            parser.setKey(points, "yes", (int) parser.getKey(points, "yes", 0) + 1);
-        }
-        return stop;
     }
 }

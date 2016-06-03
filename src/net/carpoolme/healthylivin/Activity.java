@@ -24,8 +24,7 @@ public abstract class Activity extends Question {
                 new Object[] {"running", running},
                 new Object[] {"cycling", cycling},
                 new Object[] {"gym", gym},
-                new Object[] {"hiking", hiking},
-                new Object[] {"stop", stop}
+                new Object[] {"hiking", hiking}
         };
     }
 

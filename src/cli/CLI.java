@@ -12,7 +12,8 @@ public class CLI extends CLICommand {
         super("cli.jar", new Database(), mArgv, "java -jar");
         subCommands = new Object[][]{
                 new Object[]{"add", new CLIAdd(database, downArgLevel(), commandsSoFar())},
-                new Object[]{"list", new CLIList(database, downArgLevel(), commandsSoFar())}
+                new Object[]{"list", new CLIList(database, downArgLevel(), commandsSoFar())},
+                new Object[]{"exercise", new CLIExercise(database, downArgLevel(), commandsSoFar())}
         };
     }
 
