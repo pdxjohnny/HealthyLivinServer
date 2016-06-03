@@ -30,6 +30,20 @@ public class Strings {
         return Double.parseDouble(string);
     }
 
+    public static int toIntSafe(String string) {
+        try {
+            return toInt(string);
+        } catch (NumberFormatException ignored) {}
+        return 0;
+    }
+
+    public static double toDoubleSafe(String string) {
+        try {
+            return toDouble(string);
+        } catch (NumberFormatException ignored) {}
+        return 0.0;
+    }
+
     public static boolean isBoolean(String string) {
         return string.toUpperCase().equals("TRUE") ||
                 string.toUpperCase().equals("FALSE");

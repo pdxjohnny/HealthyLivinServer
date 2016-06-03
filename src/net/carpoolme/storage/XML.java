@@ -1,6 +1,7 @@
 package net.carpoolme.storage;
 
 import net.carpoolme.utils.BasicParser;
+import net.carpoolme.utils.JSONParser;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -74,6 +75,7 @@ public class XML extends BasicParser implements Serializer {
             for (int i = 0; i < childNodes.getLength(); ++i) {
                 node = childNodes.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    System.out.println(String.format("DEBUG: XML parsing %-20s = %s", node.getNodeName(), node.getChildNodes().item(0).getNodeValue()));
                     result = setKey(result, node.getNodeName(), node.getChildNodes().item(0).getNodeValue());
                 }
             }
@@ -81,6 +83,7 @@ public class XML extends BasicParser implements Serializer {
             System.out.println("ERROR: failed to parse xml");
             e.printStackTrace();
         }
+        System.out.println(String.format("DEBUG: XML parsed %s%n", new JSONParser().toString(result)));
         return result;
     }
 }

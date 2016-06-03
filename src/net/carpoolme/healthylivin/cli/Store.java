@@ -46,7 +46,7 @@ public class Store extends net.carpoolme.healthylivin.Store {
         if (!scanner.hasNext()) {
             return false;
         }
-        health = Strings.toInt(scanner.next().trim());
+        health = Strings.toIntSafe(scanner.next().trim());
         return true;
     }
 }

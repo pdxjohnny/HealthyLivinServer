@@ -46,15 +46,15 @@ public class Food extends net.carpoolme.healthylivin.Food {
         if (!scanner.hasNext()) {
             return false;
         }
-        sodium = Strings.toInt(scanner.next().trim());
+        sodium = Strings.toIntSafe(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        sugar = Strings.toInt(scanner.next().trim());
+        sugar = Strings.toIntSafe(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        fat = Strings.toInt(scanner.next().trim());
+        fat = Strings.toIntSafe(scanner.next().trim());
         return true;
     }
 }

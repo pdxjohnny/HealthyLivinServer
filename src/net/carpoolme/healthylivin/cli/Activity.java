@@ -42,23 +42,23 @@ public class Activity extends net.carpoolme.healthylivin.Activity {
         if (!scanner.hasNext()) {
             return false;
         }
-        walking = Strings.toInt(scanner.next().trim());
+        walking = Strings.toIntSafe(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        running = Strings.toInt(scanner.next().trim());
+        running = Strings.toIntSafe(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        cycling = Strings.toInt(scanner.next().trim());
+        cycling = Strings.toIntSafe(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        gym = Strings.toInt(scanner.next().trim());
+        gym = Strings.toIntSafe(scanner.next().trim());
         if (!scanner.hasNext()) {
             return false;
         }
-        hiking = Strings.toInt(scanner.next().trim());
+        hiking = Strings.toIntSafe(scanner.next().trim());
         return true;
     }
 
