@@ -5,6 +5,7 @@ import net.carpoolme.datastructures.Tree23;
 import net.carpoolme.storage.*;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.JSONParser;
+import net.carpoolme.utils.Logging;
 
 import java.io.InputStream;
 import java.io.InvalidObjectException;
@@ -70,6 +71,7 @@ public class Table extends DLL<Object[][]> {
     }
 
     public synchronized boolean addIndexes(final String[] indexes) throws IndexOutOfBoundsException {
+        System.out.print(String.format(Logging.INFO + ": Indexes are %s%n", new JSONParser().arrayToString(indexes)));
         // Add the index to the tree of indexes that the table should have
         for (int i = indexes.length - 1; i >= 0; --i) {
             if (!searchIndexes.contains(indexes[i])) {
@@ -169,7 +171,7 @@ public class Table extends DLL<Object[][]> {
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
+            System.out.printf("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex);
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData, Tree23.GET_EQUAL);
         }
@@ -183,7 +185,7 @@ public class Table extends DLL<Object[][]> {
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
+            System.out.printf("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex);
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData, Tree23.GET_LESS_THAN_OR_EQUAL);
         }
@@ -197,7 +199,7 @@ public class Table extends DLL<Object[][]> {
         try {
             index = (Tree23) searchIndexes.get(searchIndex);
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
+            System.out.printf("WARN: No index by the name of \"%s\" found, preforming slow search%n", searchIndex);
             // Retrieve by dataTable search
             return rawSearch(searchIndex, matchData, Tree23.GET_EQUAL).get(0);
         }

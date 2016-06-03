@@ -14,6 +14,7 @@ public abstract class Activity extends Question {
     public Activity(final Database mDatabase, final Table mTable) {
         super(mDatabase, mTable);
         database.createTable(getClass().getSimpleName(), "activity", new String[]{"activity", "walking", "running", "cycling", "gym", "hiking"});
+        table = null;
         load();
     }
 

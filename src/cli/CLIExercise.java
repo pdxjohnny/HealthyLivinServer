@@ -8,6 +8,7 @@ import net.carpoolme.db.Database;
 import net.carpoolme.db.Table;
 import net.carpoolme.healthylivin.cli.Activity;
 import net.carpoolme.healthylivin.cli.Question;
+import net.carpoolme.storage.MockStorage;
 import net.carpoolme.utils.BasicParser;
 import net.carpoolme.utils.Prompt;
 
@@ -76,7 +77,7 @@ public class CLIExercise extends CLICommand {
         // category so activities with points less than the number we have should be
         // easy for the user
         String currentCategory;
-        Table allApplicable = new Table(activities);
+        Table allApplicable = new Table(new MockStorage(), "activity", new String[]{"activity"});
         allApplicable.disableDuplicates();
         Table currentApplicable;
         for (int i = 0; i < points.length - 1; ++i) {
