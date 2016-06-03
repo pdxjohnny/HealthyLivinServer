@@ -89,7 +89,10 @@ public class Tree23 {
     }
 
     public Tree23 add(final Comparable addKey, final Object addData) throws InvalidObjectException {
-        return addToTree(addKey, addData);
+        try {
+            return addToTree(addKey, addData);
+        } catch (ClassCastException ignored) {}
+        return this;
     }
 
     private Tree23 addToTree(final Comparable addKey, final Object addData) throws InvalidObjectException {
