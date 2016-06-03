@@ -61,4 +61,9 @@ public class Activity extends net.carpoolme.healthylivin.Activity {
         hiking = Strings.toInt(scanner.next().trim());
         return true;
     }
+
+    @Override
+    public String toString() {
+        return activity;
+    }
 }

@@ -6,6 +6,8 @@ import java.io.InvalidObjectException;
  * Created by John Andersen on 5/23/16.
  */
 public class Tree23 {
+    public static final int GET_EQUAL = 0;
+    public static final int GET_LESS_THAN_OR_EQUAL = 1;
 
     private static final int TREE23_NUM_NODES = 3;
 
@@ -271,33 +273,46 @@ public class Tree23 {
         if (searchKey == null) {
             return null;
         }
-        return getAllRecursive(searchKey, new Tree23());
+        return getAllRecursive(searchKey, new Tree23(), GET_EQUAL);
     }
 
-    private Tree23 getAllRecursive(Comparable searchKey, Tree23 addTo) {
+    public Tree23 getLessThanOrEqual(Comparable searchKey) {
+        if (searchKey == null) {
+            return null;
+        }
+        return getAllRecursive(searchKey, new Tree23(), GET_LESS_THAN_OR_EQUAL);
+    }
+
+    private Tree23 getAllRecursive(Comparable searchKey, Tree23 addTo, int getType) {
         // Look of the index on the left, that will be index 0 if its the leftmost node
         if (nodes[TREE23_LEFT] != null) {
-            nodes[TREE23_LEFT].getAllRecursive(searchKey, addTo);
+            nodes[TREE23_LEFT].getAllRecursive(searchKey, addTo, getType);
         }
         // Check if this node is the index
-        if (data[TREE23_LEFT] != null && searchKey.equals(keys[TREE23_LEFT])) {
-            try {
-                addTo.add(keys[TREE23_LEFT], data[TREE23_LEFT]);
-            } catch (InvalidObjectException ignored) {}
+        if (data[TREE23_LEFT] != null) {
+            if ((getType == GET_EQUAL && searchKey.equals(keys[TREE23_LEFT])) ||
+                    (getType == GET_LESS_THAN_OR_EQUAL && 0 >= searchKey.compareTo(keys[TREE23_LEFT]))) {
+                try {
+                    addTo.add(keys[TREE23_LEFT], data[TREE23_LEFT]);
+                } catch (InvalidObjectException ignored) {}
+            }
         }
         // Look of the index down the middle
         if (nodes[TREE23_MIDDLE] != null) {
-            nodes[TREE23_MIDDLE].getAllRecursive(searchKey, addTo);
+            nodes[TREE23_MIDDLE].getAllRecursive(searchKey, addTo, getType);
         }
         // Check if this node is the index
-        if (data[TREE23_RIGHT] != null && searchKey.equals(keys[TREE23_RIGHT])) {
-            try {
-                addTo.add(keys[TREE23_RIGHT], data[TREE23_RIGHT]);
-            } catch (InvalidObjectException ignored) {}
+        if (data[TREE23_RIGHT] != null) {
+            if ((getType == GET_EQUAL && searchKey.equals(keys[TREE23_RIGHT])) ||
+                    (getType == GET_LESS_THAN_OR_EQUAL && 0 >= searchKey.compareTo(keys[TREE23_RIGHT]))) {
+                try {
+                    addTo.add(keys[TREE23_RIGHT], data[TREE23_RIGHT]);
+                } catch (InvalidObjectException ignored) {}
+            }
         }
         // Look of the index on the right
         if (nodes[TREE23_RIGHT] != null) {
-            nodes[TREE23_RIGHT].getAllRecursive(searchKey, addTo);
+            nodes[TREE23_RIGHT].getAllRecursive(searchKey, addTo, getType);
         }
         return addTo;
     }

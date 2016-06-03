@@ -138,23 +138,26 @@ public class Table extends DLL<Object[][]> {
         return false;
     }
 
-    public Table rawSearch(final String searchKey, final Comparable matchData) {
+    public synchronized Table rawSearch(final String searchKey, final Comparable matchData, int getType) {
         Table table = null;
         Object[][] record;
         Comparable fieldData;
         for (int i = 0; i < size(); ++i) {
             record = get(i);
             fieldData = (Comparable) parser.getKey(record, searchKey);
-            if (fieldData != null && fieldData.equals(matchData)) {
-                if (table == null) {
-                    table = new Table(storage, searchKey, maintainIndexes.toArray(new String[maintainIndexes.size()]), searchKey);
+            if (fieldData != null) {
+                if ((getType == Tree23.GET_EQUAL && matchData.equals(fieldData)) ||
+                        (getType == Tree23.GET_LESS_THAN_OR_EQUAL && 0 >= matchData.compareTo(fieldData))) {
+                    if (table == null) {
+                        table = new Table(storage, searchKey, maintainIndexes.toArray(new String[maintainIndexes.size()]), searchKey);
+                    }
+                    table.add(record);
                 }
-                table.add(record);
             }
         }
         if (table == null) {
             // Did not find the data
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(String.format("No value for key \"%s\" matched data \"%s\"", searchKey, matchData));
         }
         return table;
     }
@@ -168,9 +171,23 @@ public class Table extends DLL<Object[][]> {
         } catch (IndexOutOfBoundsException ignored) {
             System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
             // Retrieve by dataTable search
-            return rawSearch(searchIndex, matchData);
+            return rawSearch(searchIndex, matchData, Tree23.GET_EQUAL);
         }
         return new Table(this, index.getAll(matchData));
+    }
+
+    // Get with index fallback to raw search
+    public synchronized Table selectLessThanOrEqual(final String searchIndex, final Comparable matchData) throws IndexOutOfBoundsException {
+        // Retrieve by index lookup
+        Tree23 index;
+        try {
+            index = (Tree23) searchIndexes.get(searchIndex);
+        } catch (IndexOutOfBoundsException ignored) {
+            System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
+            // Retrieve by dataTable search
+            return rawSearch(searchIndex, matchData, Tree23.GET_LESS_THAN_OR_EQUAL);
+        }
+        return new Table(this, index.getLessThanOrEqual(matchData));
     }
 
     // Get with index fallback to raw search
@@ -182,7 +199,7 @@ public class Table extends DLL<Object[][]> {
         } catch (IndexOutOfBoundsException ignored) {
             System.out.printf("WARN: No index by the name of \"%s\" found\n", searchIndex);
             // Retrieve by dataTable search
-            return rawSearch(searchIndex, matchData).get(0);
+            return rawSearch(searchIndex, matchData, Tree23.GET_EQUAL).get(0);
         }
         return (Object[][]) index.get(matchData);
     }

@@ -41,6 +41,7 @@ public class CLIExercise extends CLICommand {
         Table questions;
         Table activities;
         Question question;
+        Activity activity;
         // Loads the Question table
         new Question(database);
         // Loads the Activity table
@@ -75,10 +76,26 @@ public class CLIExercise extends CLICommand {
         // category so activities with points less than the number we have should be
         // easy for the user
         String currentCategory;
+        Table allApplicable = new Table(activities);
+        allApplicable.disableDuplicates();
         Table currentApplicable;
         for (int i = 0; i < points.length - 1; ++i) {
             currentCategory = (String) points[i][0];
-//            currentApplicable = activities.selectLessOrEqual(currentCategory, (int) points[i][1]);
+            try {
+                currentApplicable = activities.selectLessThanOrEqual(currentCategory, (int) points[i][1]);
+            } catch (IndexOutOfBoundsException ignored) {
+                continue;
+            }
+            for (int j = 0; j < currentApplicable.size(); ++j) {
+                allApplicable.add(currentApplicable.get(j));
+            }
+        }
+        for (int i = 0; i < allApplicable.size(); ++i) {
+            activity = new Activity(database);
+            if (!activity.Unmarshal(allApplicable.get(i))) {
+                continue;
+            }
+            System.out.printf(String.format("%-4d - %s%n", i, activity));
         }
     }
 

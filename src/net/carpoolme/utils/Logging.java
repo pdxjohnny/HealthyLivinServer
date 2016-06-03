@@ -43,9 +43,9 @@ public class Logging extends PrintStream {
             case WARN:
                 return WARN_LEVEL;
             case ERROR:
+            default:
                 return ERROR_LEVEL;
             case FATAL:
-            default:
                 return FATAL_LEVEL;
         }
     }
