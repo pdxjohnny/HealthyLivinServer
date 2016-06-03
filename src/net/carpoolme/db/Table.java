@@ -61,6 +61,15 @@ public class Table extends DLL<Object[][]> {
         loadFromStorage(storage);
     }
 
+    public synchronized void reloadFromStorage() {
+        storage.disableWrite();
+        InputStream[] records = storage.allRecords();
+        for (int i = 0; i < records.length; ++i) {
+            add((Object[][]) serializer.toObject(records[i]));
+        }
+        storage.enableWrite();
+    }
+
     public synchronized void loadFromStorage(Storage mStorage) {
         mStorage.disableWrite();
         InputStream[] records = mStorage.allRecords();
@@ -149,7 +158,7 @@ public class Table extends DLL<Object[][]> {
             fieldData = (Comparable) parser.getKey(record, searchKey);
             if (fieldData != null) {
                 if ((getType == Tree23.GET_EQUAL && matchData.equals(fieldData)) ||
-                        (getType == Tree23.GET_LESS_THAN_OR_EQUAL && 0 >= matchData.compareTo(fieldData))) {
+                        (getType == Tree23.GET_LESS_THAN_OR_EQUAL && 0 <= matchData.compareTo(fieldData))) {
                     if (table == null) {
                         table = new Table(storage, searchKey, maintainIndexes.toArray(new String[maintainIndexes.size()]), searchKey);
                     }

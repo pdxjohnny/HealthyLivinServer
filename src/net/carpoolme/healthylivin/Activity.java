@@ -12,9 +12,11 @@ public abstract class Activity extends Question {
     protected String activity = DEFAULT_ACTIVITY;
 
     public Activity(final Database mDatabase, final Table mTable) {
-        super(mDatabase, mTable);
-        database.createTable(getClass().getSimpleName(), "activity", new String[]{"activity", "walking", "running", "cycling", "gym", "hiking"});
-        table = null;
+        super(mDatabase, mTable, false);
+        database.createTable(getClass().getSimpleName(),
+                "activity",
+                new String[]{"activity", "walking", "running", "cycling", "gym", "hiking"}
+        );
         load();
     }
 
@@ -33,16 +35,5 @@ public abstract class Activity extends Question {
         super.Unmarshal(data);
         activity = (String) parser.getKey(data, "activity", DEFAULT_ACTIVITY);
         return true;
-    }
-
-    public Table load() {
-        if (table == null) {
-            table = (Table) database.get(getClass().getSimpleName());
-        }
-        return table;
-    }
-
-    public boolean save() {
-        return database.insert(getClass().getSimpleName(), Marshal());
     }
 }

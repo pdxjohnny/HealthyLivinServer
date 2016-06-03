@@ -25,8 +25,14 @@ public abstract class Question extends BasicData {
     protected boolean stop = false;
 
     public Question(final Database mDatabase, final Table mTable) {
+        this(mDatabase, mTable, true);
+    }
+
+    public Question(final Database mDatabase, final Table mTable, final boolean createTable) {
         super(mDatabase, mTable);
-        database.createTable(getClass().getSimpleName(), "question", new String[]{"question"});
+        if (createTable) {
+            database.createTable(getClass().getSimpleName(), "question", new String[]{"question"});
+        }
         load();
     }
 
@@ -56,7 +62,9 @@ public abstract class Question extends BasicData {
 
     public Table load() {
         if (table == null) {
-            table = (Table) database.get(getClass().getSimpleName());
+            try {
+                table = (Table) database.get(getClass().getSimpleName());
+            } catch (IndexOutOfBoundsException ignored) {}
         }
         return table;
     }

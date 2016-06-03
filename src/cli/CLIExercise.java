@@ -58,6 +58,7 @@ public class CLIExercise extends CLICommand {
         }
         try {
             activities = (Table) database.get("Activity");
+            System.out.print(String.format("INFO: Activity size %d%n", activities.size()));
         } catch (IndexOutOfBoundsException e) {
             System.out.print(String.format("FATAL: %s%n", e.getMessage()));
             System.out.print(String.format("Try adding some activities first%n"));
@@ -86,6 +87,7 @@ public class CLIExercise extends CLICommand {
             currentCategory = (String) points[i][0];
             try {
                 currentApplicable = activities.selectLessThanOrEqual(currentCategory, (int) points[i][1]);
+                System.out.print(String.format("INFO: currentApplicable size %d for %s as %d%n", currentApplicable.size(), currentCategory, (int) points[i][1]));
             } catch (IndexOutOfBoundsException ignored) {
                 continue;
             }

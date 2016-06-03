@@ -290,8 +290,9 @@ public class Tree23 {
         }
         // Check if this node is the index
         if (data[TREE23_LEFT] != null) {
+            System.out.print(String.format("INFO: checking %s == %s%n", searchKey.toString(), keys[TREE23_LEFT].toString()));
             if ((getType == GET_EQUAL && searchKey.equals(keys[TREE23_LEFT])) ||
-                    (getType == GET_LESS_THAN_OR_EQUAL && 0 >= searchKey.compareTo(keys[TREE23_LEFT]))) {
+                    (getType == GET_LESS_THAN_OR_EQUAL && 0 <= searchKey.compareTo(keys[TREE23_LEFT]))) {
                 try {
                     addTo.add(keys[TREE23_LEFT], data[TREE23_LEFT]);
                 } catch (InvalidObjectException ignored) {}
@@ -303,8 +304,9 @@ public class Tree23 {
         }
         // Check if this node is the index
         if (data[TREE23_RIGHT] != null) {
+            System.out.print(String.format("INFO: checking %s == %s%n", searchKey.toString(), keys[TREE23_RIGHT].toString()));
             if ((getType == GET_EQUAL && searchKey.equals(keys[TREE23_RIGHT])) ||
-                    (getType == GET_LESS_THAN_OR_EQUAL && 0 >= searchKey.compareTo(keys[TREE23_RIGHT]))) {
+                    (getType == GET_LESS_THAN_OR_EQUAL && 0 <= searchKey.compareTo(keys[TREE23_RIGHT]))) {
                 try {
                     addTo.add(keys[TREE23_RIGHT], data[TREE23_RIGHT]);
                 } catch (InvalidObjectException ignored) {}

@@ -4,6 +4,8 @@ import net.carpoolme.datastructures.Tree23;
 import net.carpoolme.storage.FileSystemStorage;
 import net.carpoolme.storage.MockStorage;
 import net.carpoolme.storage.Storage;
+import net.carpoolme.utils.JSONParser;
+import net.carpoolme.utils.Logging;
 
 import java.io.InvalidObjectException;
 import java.nio.file.FileSystemException;
@@ -35,6 +37,7 @@ public class Database extends Tree23 {
     public synchronized boolean createTable(final String tableName, final String primaryKey, final String[] indexes) {
         try {
             get(tableName);
+            System.out.print(String.format(Logging.INFO + ": Table not created %s, %s%n", tableName, new JSONParser().arrayToString(indexes)));
             return false;
         } catch (IndexOutOfBoundsException ignored) {}
         try {
@@ -42,6 +45,7 @@ public class Database extends Tree23 {
             Storage downLevel = storage.downLevel(tablePath);
             Table table = new Table(downLevel, primaryKey, indexes);
             add(tableName, table);
+            System.out.print(String.format(Logging.INFO + ": Created table %s, %s%n", tableName, new JSONParser().arrayToString(indexes)));
             return true;
         } catch (IndexOutOfBoundsException | InvalidObjectException ignored) {}
         return false;
