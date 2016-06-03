@@ -40,3 +40,12 @@ The idea is that there are several categories and you can add yes or no
 questions which add points to each category. After 5 questions with yes answers
 the program decides what would be a good activity for you. Activities can also
 be added and will be chosen to match point values for each category.
+
+Running
+---
+
+[![asciicast](https://asciinema.org/a/47770.png)](https://asciinema.org/a/47770)
+
+
+The commands are pretty self explanatory and if you need help on the flags for
+a command just add `--help`
